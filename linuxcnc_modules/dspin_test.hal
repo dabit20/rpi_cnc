@@ -1,0 +1,11 @@
+loadrt threads name1=test-thread period1=4000000
+loadrt dspin
+loadrt siggen
+addf dspin test-thread
+addf siggen.0.update test-thread
+setp siggen.0.frequency 0.25
+setp siggen.0.amplitude 10.0
+setp dspin.enable true
+setp dspin.velocity-cmd-joint0 20.0
+start
+show
