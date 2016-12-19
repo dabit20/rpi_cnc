@@ -36,14 +36,21 @@ MODULE_SUPPORTED_DEVICE("dSpin");
 /* Number of joints/motors */
 #define NR_JOINTS 1
 
-/* Raspberry BCM IO numbers for the various wires */
+/* Raspberry BCM IO numbers for the various wires. 
+ * Define one number for each joint. Shared pins may use the same number 
+ */
 static uint8_t dSPIN_RESET[NR_JOINTS] = { 17 };             /* STBY lines of attached dSpin modules. May be shared between multiple modules */
 static uint8_t dSPIN_CS[NR_JOINTS] = { 27 };                    /* CSN lines of attached dSpin modules. May be shared between multiple modules */
 static uint8_t dSPIN_CLK[NR_JOINTS] = { 9 };                    /* CK lines of attached dSpin modules. May be shared between multiple modules */
 static uint8_t dSPIN_MOSI[NR_JOINTS] = { 10 };               /* SDI lines of attached dSpin modules. Separate per module */
 static uint8_t dSPIN_MISO[NR_JOINTS] = { 11 };                /* SDO lines of attached dSpin modules. Separate per module */
 
-/* BEMF compensation parameters for each motor */
+/* Minimum delay in microseconds between bit toggles. May be 0 to disable the timing checks */
+#define MIN_TIMING 1
+
+/* BEMF compensation parameters for each motor. See datasheet and ST AN4144 for information on how
+ * to obtain these 
+ */
 static uint8_t KVAL_HOLD[NR_JOINTS] = { 0x24 };
 static uint8_t KVAL_RUN[NR_JOINTS] = { 0x2F };         
 static uint8_t ST_SLP[NR_JOINTS] = { 0x40 }; 
@@ -271,7 +278,7 @@ int gpioInitialise(void)
 /************* End of code included from minimal_gpio.c ****************/
 
 
-/************* dSpin control code ****************/
+/************* dSpin control code. Code is partially taken from https://github.com/blerchin/dSPIN_raspi ****************/
 
 /* parameters */
 #define dSPIN_ABS_POS              0x01
@@ -315,24 +322,33 @@ static uint32_t timestart, timeend;
  */
 inline void minTiming_start(void)
 {
-        timestart = gpioTick();
+        #if MIN_TIMING > 0
+                timestart = gpioTick();
+        #endif
 }
 
 inline void minTiming_end(uint32_t microseconds)
 {
-        timeend=gpioTick();
-        if (timeend < timestart) {
-               microseconds -= 0xffffffff-timestart;
-               if (microseconds>0x80000000)     /* overflow? Then our time has passed */
-                        return;
-               timestart=0;
-        }
-        while ((timeend-timestart) < microseconds) {
-                timeend = gpioTick();
-        }        
+        #if  MIN_TIMING > 0
+                timeend=gpioTick();
+                if (timeend < timestart) {
+                       microseconds -= 0xffffffff-timestart;
+                       if (microseconds>0x80000000)     /* overflow? Then our time has passed */
+                                return;
+                       timestart=0;
+                }
+                while ((timeend-timestart) < microseconds) {
+                        timeend = gpioTick();
+                }
+       #else
+                /* Insert a few clockcycles delay as an insurance policy. Although the inefficient way we toggle I/O
+                    is already slow enough when using short wires */
+                 for (timestart=0;timestart<150;timestart++)
+                        asm volatile ("mov r0, r0");
+       #endif        
 }
 
-#define MIN_TIMING 1
+
 
 /* Write an 8-bit command */
 inline void dSpin_writecommand(uint8_t command)
@@ -620,6 +636,11 @@ struct __comp_state {
     hal_float_t *velocity_cmd_joint[NR_JOINTS];
     hal_float_t *position_fb_joint[NR_JOINTS];
     hal_bit_t *enable;                                               /* enable. When disabled, bridge is in hi-Z */
+    hal_bit_t *steploss_error[NR_JOINTS];            /* Step loss error on either coil A or B */
+    hal_bit_t *overcurrent_error[NR_JOINTS];       /* overcurrent error */
+    hal_bit_t *thermal_error[NR_JOINTS];           /* Thermal warning or shutdown */
+    
+    
     hal_float_t scale_joint[NR_JOINTS];		/* Scale from units to steps */
      hal_u32_t status_joint[NR_JOINTS];
 };
@@ -658,6 +679,15 @@ static int export(char *prefix, long extra_arg) {
 		r = hal_param_u32_newf(HAL_RW, &(inst->status_joint[i]), comp_id,
 		    "%s.status-joint%d", prefix,i);
 		if(r != 0) return r;
+		r = hal_pin_bit_newf(HAL_OUT, &(inst->steploss_error[i]), comp_id,
+                    "%s.steploss-error-joint%d", prefix, i);
+                if(r != 0) return r;
+                r = hal_pin_bit_newf(HAL_OUT, &(inst->overcurrent_error[i]), comp_id,
+                    "%s.overcurrent-error-joint%d", prefix, i);
+                if(r != 0) return r;
+                r = hal_pin_bit_newf(HAL_OUT, &(inst->thermal_error[i]), comp_id,
+                    "%s.thermal-error-joint%d", prefix, i);
+                if(r != 0) return r;                    
 	}
     r = hal_pin_bit_newf(HAL_IN, &(inst->enable), comp_id,
         "%s.enable", prefix);
@@ -715,24 +745,19 @@ void rtapi_app_exit(void) {
 
 static void _(struct __comp_state *__comp_inst, long period) {
 	int i,j;
-	static uint8_t counter = 0;
+	static uint16_t counter = 0;
 	float speed[NR_JOINTS];
 	int32_t pos[NR_JOINTS];	
 	if (!(*__comp_inst->enable)) {
 	        /* We are disabled, put bridge in Hi-Z */
-//	        if (counter==0)
-//	                dSpin_writecommand (dSPIN_SOFT_HIZ);
+	        if (counter==0)
+	                dSpin_writecommand (dSPIN_SOFT_HIZ);
 	        if (counter < 0xffff)
 	                counter++;
 	} else {
 	        counter = 0;
-	        /* We are enabled. Run the motor at the commanded speed... */
-#if 1
-	        for (j=0;j<NR_JOINTS;j++) { 
-	                speed[j] = ((*__comp_inst->velocity_cmd_joint[j]) * __comp_inst->scale_joint[j]);
-	        }
-	        dSpin_run (speed);
-	        /*.. get the position feedback .. */
+	        /* We are enabled. */
+	        /* get the position feedback .. */
 	        dSpin_readparam3bytes (dSPIN_ABS_POS, (uint32_t *)pos);
 	        for (j=0;j<NR_JOINTS;j++) { 
 	                /* Sign-extend the 22-bit signed position value to 32-bit */
@@ -741,9 +766,19 @@ static void _(struct __comp_state *__comp_inst, long period) {
 	                /* Calculate the current position. Note the 128-ustep correction */
 	                *__comp_inst->position_fb_joint[j] = ((hal_float_t)pos[j]) / (__comp_inst->scale_joint[j] * 128.0);
 	        }
-#endif	        
-	        /*.. and status */
-	        dSpin_getstatus((uint32_t *)__comp_inst->status_joint);
+                /* Get status */
+	        for (j=0;j<NR_JOINTS;j++) { 
+	                dSpin_getstatus((uint32_t *)__comp_inst->status_joint+j);
+	                /* Decode a few status bits */
+	                *__comp_inst->steploss_error[j] = ((__comp_inst->status_joint[j] & 0x6000)==0x6000) ? false : true;
+	                *__comp_inst->overcurrent_error[j] = ((__comp_inst->status_joint[j] & 0x1000)==0x1000) ? false : true;
+	                *__comp_inst->thermal_error[j] = ((__comp_inst->status_joint[j] & 0x0c00)==0x0c00) ? false : true;
+	        }
+	        /* Run the motor at the commanded speed... */
+	        for (j=0;j<NR_JOINTS;j++) { 
+	                speed[j] = ((*__comp_inst->velocity_cmd_joint[j]) * __comp_inst->scale_joint[j]);
+	        }
+	        dSpin_run (speed);	        
 	}
 }
 

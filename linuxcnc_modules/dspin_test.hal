@@ -1,11 +1,25 @@
 loadrt threads name1=test-thread period1=4000000
 loadrt dspin
 loadrt siggen
+loadrt pid num_chan=1
+
 addf dspin test-thread
 addf siggen.0.update test-thread
+addf pid.0.do-pid-calcs test-thread
+
 setp siggen.0.frequency 0.25
-setp siggen.0.amplitude 10.0
+setp siggen.0.amplitude 20.0
+net joint0-pos siggen.0.sine pid.0.command
+net joint0-fb dspin.position-fb-joint0 pid.0.feedback
+net joint0-velcmd pid.0.output dspin.velocity-cmd-joint0
+setp pid.0.Pgain 50.0
+setp pid.0.Igain 10.0
+setp pid.0.FF1 1.0
+setp pid.0.maxoutput 500.0
+
+setp dspin.scale-joint0 2.5
+
 setp dspin.enable true
-setp dspin.velocity-cmd-joint0 20.0
+setp pid.0.enable true
 start
-show
+loadusr halscope
