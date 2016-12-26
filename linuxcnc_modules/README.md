@@ -8,3 +8,11 @@ This directory contains various LinuxCNC modules.
  - dspin_test.hal
 	 Simple HAL test script to verify the module. Use it with 'halrun -I dspin_test.hal'
 
+#### Auxiliary (temperature) controller driver ####
+
+ - auxcontroller.comp
+	 Userspace HAL module for the auxiliary temperature/IO controller. Install using 'halcompile --install auxcontroller.comp'
+	 
+ - auxcontroller_test.hal
+	 HAL test script to verify/debug the module. Use it with 'halrun -I auxcontroller_test.hal'
+
