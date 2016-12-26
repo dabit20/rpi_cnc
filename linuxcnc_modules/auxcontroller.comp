@@ -1,0 +1,242 @@
+component auxcontroller 						"Driver for the STM32F103 Minimum System Development Board based auxiliary IO controller";
+/* Note: array index for chan_xx must match NROUTCHANNELS in commpackets.h */
+param rw float chan_Kp-# [9]=0.0				"Output channel PID Kp";
+param rw float chan_Ki-# [9]=0.0				"Output channel PID Ki";
+param rw float chan_Kd-# [9]=0.0				"Output channel PID Kd";
+param rw float chan_FF0-# [9]=0.0				"Output channel PID 0th order feedforward";
+param rw float chan_minlim-# [9]=0.0			"Output channel PID minimum output";
+param rw float chan_maxlim-# [9]=1.0			"Output channel PID maximum output";
+param rw signed chan_feedbackid-# [9]=-1		"Output channel PID feedback device ID. 0-5 are thermistors, 6-7 are GP analog inputs, negative values translate to 0.0";
+pin in float chan_command-# [9]=0.0  			"Output channel command. This is temperature in degrees C when using a thermistor as the feedback";
+/* Note: array index for thermistor_xx must match NRTHERMISTORS in commpackets.h */
+param rw float thermistor_refresistor-# [6] = 4700.0	"Thermistor reference resistor in Ohms";
+param rw float thermistor_mintemp-# [6] = 0.0			"Thermistor valid minimum temperature";
+param rw float thermistor_maxtemp-# [6] = 60.0		"Thermistor valid maximum temperature";
+param rw float thermistor_shhA-# [6] = 0.000722378300319346	"Thermistor Steinhart-Hart coefficient A (ln^0)";
+param rw float thermistor_shhB-# [6] = 0.000216301852054578	"Thermistor Steinhart-Hart coefficient B (ln^1)";
+param rw float thermistor_shhC-# [6] = 0.0					"Thermistor Steinhart-Hart coefficient C (ln^2)";
+param rw float thermistor_shhD-# [6] = 9.2641025635702e-08	"Thermistor Steinhart-Hart coefficient D (ln^3)";
+
+pin out float thermistor_temperature-# [6]		"Measured thermistor temperature";
+pin out bit thermistor-isvalid-# [6]			"Temperature measurement valid";
+
+option userspace;
+option userinit yes;
+option extra_cleanup yes;           
+author "Bart van Hest (dabit@icecoldcomputing.com)";
+description """
+This component performs the interfacing between LinuxCNC and the auxiliary IO/temperature controller based on an STM32F103.
+It looks for a raw HID device with VID 0x0483 and PID 0x5752. This USB device should have a udev rule to allow non-root access.
+A suitable rule would be a /etc/udev/rules.d/50-3dprinterauxcontroller containing 
+'SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5752", MODE:="0666"'
+
+.SH SYNOPSIS
+(ignore the auto-generated SYNOPSIS above)
+.SH
+.HP
+.B loadusr -W 3dprinter_auxcontroller \\fB
+Multiple instances of this component are allowed, but useless until further discrimination between devices is implemented.
+""";
+license "GPLv2 or greater";
+;;
+/*
+  Userspace HAL component to control a STM32F103 board running the auxcontroller firmware 
+
+  Copyright (C) 2016, 2017 Bart van Hest
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation, version 2.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA.
+
+  see 'man 3dprinter_auxcontroller'
+*/
+
+#include <stdio.h>
+#include <string.h>
+#include <linux/input.h>
+#include <linux/hidraw.h>
+#include <sys/fcntl.h>
+#include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+#include <poll.h>
+#include <endian.h>
+/* Since halcompile compiles in a temp directory we need an absolute path here. Adopt to your own setup */
+#include "/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc/commpackets.h"
+
+/* USB device to search for */
+#define USBDEV_VID 0x0483
+#define USBDEV_PID 0x5752
+
+/* USB transmit/receive buffers and file descriptor */
+static uint8_t xmitbuf[65], rcvbuf[65];
+int usbfd = -1;
+
+/* Helper structs for transmitting data. None of them can be larger than 64 bytes (USB limit) */
+#pragma pack(push,1)
+typedef struct {
+	sPkt_ThermistorSetup ts;
+	sPkt_Endofcommand eoc;
+} _transmitpkt1;
+_transmitpkt1 transmitpkt1;
+
+typedef struct {
+	sPkt_PIDControl pc;
+	sPkt_Endofcommand eoc;
+} _transmitpkt2;
+_transmitpkt2 transmitpkt2;
+
+#pragma pack(pop)
+
+/* Brute-force open a couple of /dev/hidrawX devices and check if it is our motion controller */
+static int FindAndOpenUSBdevice(void) {
+	char buf[16];
+	int i, fd, res;
+	struct hidraw_devinfo info;
+	for (i=0;i<16;i++) {		
+		snprintf(buf, sizeof(buf), "/dev/hidraw%d", i);
+		fprintf(stderr,"Trying to open %s ..", buf);
+//		fd = open(buf, O_RDWR|O_NONBLOCK);
+		fd = open(buf, O_RDWR);	/* Note: do not rely on O_NONBLOCK; there is a kernel bug that prevents nonblock on disconnect */
+		if (fd > 0) {
+			fprintf(stderr,"Succes. Querying device for VID/PID..\n");
+			/* Opening the device succeeded. Extract VID/PID and compare */
+			memset(&info, 0x0, sizeof(info));
+			res = ioctl(fd, HIDIOCGRAWINFO, &info);
+			if (res >= 0) {
+				if (info.vendor == USBDEV_VID && info.product == USBDEV_PID) {
+					/* We found our device. Return the fd. */
+					fprintf(stderr,"Found device at %s\n",buf);
+					return fd;
+				} else {
+					fprintf(stderr,"VID=%04x, PID=%04x. Not the device we want\n",info.vendor, info.product);
+				}
+			}
+			/* Not the correct device or we could not extract VID/PID. Close fd */
+			close (fd);
+		} else {
+			fprintf(stderr,"Failed.\n");
+		}
+	}
+	return -1;
+}
+
+/* Find and open USB device, initialise structures */
+void userinit(int argc, char **argv)
+{
+	/* Basic compiler sanity check */
+	if (sizeof (sPkt_Endofcommand) != 2) { fprintf (stderr,"structure packing fails, sizeof (sPkt_Endofcommand) should return 2\n"); exit (-2); }
+	if (sizeof (_transmitpkt1) > 64) { fprintf (stderr,"Transmitpacket 1 size > 64, sizeof (_transmitpkt1)=%d\n", (int)sizeof (_transmitpkt1)); exit (-3); }
+	if (sizeof (_transmitpkt2) > 64) { fprintf (stderr,"Transmitpacket 2 size > 64, sizeof (_transmitpkt2)=%d\n", (int)sizeof (_transmitpkt2)); exit (-3); }
+	/* Open the USB device */
+	usbfd = FindAndOpenUSBdevice();
+    
+	if (usbfd < 0) {
+		fprintf(stderr,"ERROR opening device, fd=%d\n", usbfd);
+	} else {
+		fprintf(stderr,"SUCCESS opening device\n");
+	} 
+	/* Setup static structure members */
+	transmitpkt1.eoc.len = sizeof (sPkt_Endofcommand);
+	transmitpkt1.eoc.id = PKT_ENDOFCOMMAND;
+	transmitpkt1.ts.len = sizeof (sPkt_ThermistorSetup);
+	transmitpkt1.ts.id = PKT_THERMISTOR_SETUP;
+	
+	transmitpkt2.pc.len = sizeof(sPkt_PIDControl);
+	transmitpkt2.pc.id = PKT_PIDCONTROL;
+	transmitpkt2.eoc.len = sizeof (sPkt_Endofcommand);
+	transmitpkt2.eoc.id = PKT_ENDOFCOMMAND;
+}
+
+void user_mainloop(void) {
+	int outchannel_ctr=0, thermistor_ctr=0, ret;
+	uint8_t idx=0, *data, selector=0, thermistorid;
+	sleep (1);
+	while(1) {
+		FOR_ALL_INSTS() {
+			/* Fill transmit packet. */
+			xmitbuf[0] = 0;
+			if (++selector & 0x01) {
+				transmitpkt1.ts.ThermistorID = thermistor_ctr;
+				transmitpkt1.ts.RefResistorValue = thermistor_refresistor(thermistor_ctr);
+				transmitpkt1.ts.SteinhartHart[0] = thermistor_shhA(thermistor_ctr);
+				transmitpkt1.ts.SteinhartHart[1] = thermistor_shhB(thermistor_ctr);
+				transmitpkt1.ts.SteinhartHart[2] = thermistor_shhC(thermistor_ctr);
+				transmitpkt1.ts.SteinhartHart[3] = thermistor_shhA(thermistor_ctr);
+				transmitpkt1.ts.ValidTempMin = thermistor_mintemp(thermistor_ctr);
+				transmitpkt1.ts.ValidTempMax = thermistor_maxtemp(thermistor_ctr);
+				memcpy (xmitbuf+1, &transmitpkt1, sizeof(_transmitpkt1));
+				if (++thermistor_ctr >= NRTHERMISTORS)
+					thermistor_ctr = 0;
+			} else {
+				transmitpkt2.pc.outID = outchannel_ctr;
+				transmitpkt2.pc.inID = chan_feedbackid(outchannel_ctr);
+				transmitpkt2.pc.command = chan_command(outchannel_ctr);
+				transmitpkt2.pc.coeffP = chan_Kp(outchannel_ctr);
+				transmitpkt2.pc.coeffI = chan_Ki(outchannel_ctr);
+				transmitpkt2.pc.coeffD = chan_Kd(outchannel_ctr);
+				transmitpkt2.pc.coeffFF0 = chan_FF0(outchannel_ctr);
+				transmitpkt2.pc.minlim = chan_minlim(outchannel_ctr);
+				transmitpkt2.pc.maxlim = chan_maxlim(outchannel_ctr);
+				memcpy (xmitbuf+1, &transmitpkt1, sizeof(_transmitpkt2));
+				if (++outchannel_ctr >= NROUTCHANNELS)
+					outchannel_ctr = 0;
+			}			
+			/* Send to USB device */
+			ret=write(usbfd, xmitbuf, 65);
+			if (ret != 65) {
+				fprintf(stderr,"USB transmit fail: %d bytes transmitted\n", ret);
+			}
+			/* See if there is data available */
+			ret = read(usbfd, xmitbuf, 64);
+			idx = 0;
+			if (ret == 64) {
+				while (idx<64) {
+					data = &xmitbuf[idx];
+					/* Determine packet type and process the packet */
+					switch (data[1]) {
+						case PKT_THERMISTOR_VALUE:
+							thermistorid = ((sPkt_ThermistorValue *)data)->ThermistorID;
+							if (thermistorid < NRTHERMISTORS) {
+								thermistor_isvalid(thermistorid) = ((sPkt_ThermistorValue *)data)->bIsValid;
+								thermistor_temperature(thermistorid) = ((sPkt_ThermistorValue *)data)->TempCelcius;
+							}
+						break;
+						/* End of data frame command */
+						case PKT_ENDOFCOMMAND:
+							idx = 64;
+						break;
+					}
+					/* go to next packet (or next byte if there was none) */
+					if (data[0])
+						idx += data[0];
+					else
+						idx++;
+					}
+			}
+			
+			usleep (5000);
+		}		
+	}
+}
+
+/* close USB fd */
+EXTRA_CLEANUP()
+{
+    if (usbfd > 0)
+    	close(usbfd);
+    fprintf(stderr,"Cleanup done.\n");
+}
