@@ -1,0 +1,81 @@
+/*
+ * commpackets.h
+ *
+ *  Created on: Oct 14, 2016
+ *      Author: dabit
+ */
+
+#ifndef COMMPACKETS_H_
+#define COMMPACKETS_H_
+
+// Sensible names for input channel IDs
+#define INID_THERMISTOR1	1
+#define INID_THERMISTOR2	2
+#define INID_THERMISTOR3	3
+#define INID_THERMISTOR4	4
+
+// Sensible names for output channel IDs
+#define NROUTCHANNELS		6
+#define OUTID_DC12V_1		129			// 12VDC channel 1, typically a fan
+#define OUTID_DC12V_2		130			// 12VDC channel 2
+#define OUTID_DC12V_2		131			// 12VDC channel 3
+#define OUTID_DC24V_1		131			// 24VDC channel 1, typically a nozzle heater
+#define OUTID_DC24V_2		132			// 24VDC channel 2
+#define OUTID_DC24V_2		132			// 24VDC channel 3
+#define OUTID_AC230V_1		133			// 230VAC channel 1, typically a room/bed heater. Uses a very low frequency PDM modulation scheme
+#define OUTID_AC230V_2		134			// 230VAC channel 2
+#define OUTID_AC230V_3		134			// 230VAC channel 3
+
+
+
+#pragma pack(push,1)
+
+/* communication packets. Note: all data transferred in little endian */
+/* Communicate a PID control value. This is also used for fan PWM; then the PID coeffs are 0.0f and only FF0 is used */
+#define PKT_PIDCONTROL 10
+typedef struct {
+	uint8_t len;			// packet length in bytes, including this one.
+	uint8_t id;				// id=PKT_PIDCONTROL
+	uint8_t outID;			// Output channel ID
+	uint8_t inID;			// Input channel ID
+	uint8_t	bEnable;		// Enable the PID when !=0
+	float command;			// Commanded value
+	float coeffP;			// PID P coefficient
+	float coeffI;			// PID I coefficient
+	float coeffD;			// PID D coefficient
+	float coeffFF0;			// PID FF0 coefficient
+	float minlim, maxlim;	// Minimum and maximum output limit values
+} sPkt_PIDControl;
+
+/* Communicate a thermistor setup */
+#define PKT_THERMISTOR_SETUP 20
+typedef struct {
+	uint8_t len;			// packet length in bytes, including this one.
+	uint8_t id;				// id=PKT_THERMISTOR_SETUP
+	uint8_t ThermistorID;	// Number of the thermistor
+	float RefResistorValue;	// Value of the reference resistor
+	float SteinhartHart[4];	// The Steinhart-Hart equation A,B,C and D coefficients
+	float ValidTempMin;		// Minimum valid temperature in degrees C. Used to check calculation results
+	float ValidTempMax;		// Maximum valid temperature in degrees C. Used to check calculation results
+} sPkt_ThermistorSetup;
+
+/* Communicate a thermistor value (usually to host) */
+#define PKT_THERMISTOR_VALUE 30
+typedef struct {
+	uint8_t len;			// packet length in bytes, including this one.
+	uint8_t id;				// id=PKT_THERMISTOR_VALUE
+	uint8_t ThermistorID;	// Number of the thermistor
+	float TempCelcius;		// Temperature in degrees C
+} sPkt_ThermistorValue;
+
+
+/* Signal end of command packets. */
+#define PKT_ENDOFCOMMAND 0xff
+typedef struct {
+	uint8_t len;			// packet length in bytes, including this one = 2
+	uint8_t id;				// id=PKT_ENDOFCOMMAND
+} sPkt_Endofcommand;
+#pragma pack(pop)
+
+
+#endif /* COMMPACKETS_H_ */

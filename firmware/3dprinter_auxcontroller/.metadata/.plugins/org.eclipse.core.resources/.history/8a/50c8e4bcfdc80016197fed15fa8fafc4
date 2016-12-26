@@ -1,0 +1,46 @@
+/*
+ * housekeeping.h
+ *
+ *  Created on: Oct 14, 2016
+ *      Author: dabit
+ */
+
+#ifndef HOUSEKEEPING_H_
+#define HOUSEKEEPING_H_
+
+#define TICKS_PER_SEC 30000								/* Timer ISR rate divided by 2 */
+
+#define NR_ADC_CHANNELS 5								/* Number of enabled ADC channels */
+
+#ifndef bool
+typedef uint8_t bool;
+#endif
+#ifndef true
+#define true 1
+#endif
+#ifndef false
+#define false 0
+#endif
+
+/* Output modulator data */
+typedef struct {
+	GPIO_TypeDef* GPIOx;	// I/O port for the modulator pin
+	uint16_t GPIO_Pin;		// I/O pin number
+
+	uint8_t id;				// id=PKT_PIDCONTROL
+	uint8_t outID;			// Output channel ID
+	uint8_t inID;			// Input channel ID
+	uint8_t	bEnable;		// Enable the PID when !=0
+	float command;			// Commanded value
+	float coeffP;			// PID P coefficient
+	float coeffI;			// PID I coefficient
+	float coeffD;			// PID D coefficient
+	float coeffFF0;			// PID FF0 coefficient
+	float minlim, maxlim;	// Minimum and maximum output limit values
+} OutModulator;
+
+extern volatile bool bGotData, IsRunning;				/* Set to true when we received a packet from the host */
+extern volatile int32_t CommTimeoutCtr;		/* Communications timeout downcounter */
+
+
+#endif /* HOUSEKEEPING_H_ */
