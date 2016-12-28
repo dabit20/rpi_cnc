@@ -1,16 +1,316 @@
-12:05:05 **** Incremental Build of configuration Debug for project STM32 ****
+17:49:20 **** Incremental Build of configuration Debug for project STM32 ****
 make -j8 all 
 Building file: ../Src/main.c
+Building file: ../Src/stm32f1xx_hal_msp.c
+Building file: ../Src/stm32f1xx_it.c
+Invoking: MCU GCC Compiler
+Invoking: MCU GCC Compiler
+Building file: ../Src/usb_device.c
+Invoking: MCU GCC Compiler
+Building file: ../Src/usbd_conf.c
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+Invoking: MCU GCC Compiler
 Building file: ../Src/usbd_custom_hid_if.c
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Src/main.d" -MT"Src/main.o" -o "Src/main.o" "../Src/main.c"
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Src/stm32f1xx_hal_msp.d" -MT"Src/stm32f1xx_hal_msp.o" -o "Src/stm32f1xx_hal_msp.o" "../Src/stm32f1xx_hal_msp.c"
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Src/stm32f1xx_it.d" -MT"Src/stm32f1xx_it.o" -o "Src/stm32f1xx_it.o" "../Src/stm32f1xx_it.c"
 Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
 Invoking: MCU GCC Compiler
-/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Debug
-arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Src/main.d" -MT"Src/main.o" -o "Src/main.o" "../Src/main.c"
-/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Debug
-arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Src/usbd_custom_hid_if.d" -MT"Src/usbd_custom_hid_if.o" -o "Src/usbd_custom_hid_if.o" "../Src/usbd_custom_hid_if.c"
+Building file: ../Src/usbd_desc.c
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Src/usb_device.d" -MT"Src/usb_device.o" -o "Src/usb_device.o" "../Src/usb_device.c"
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Src/usbd_conf.d" -MT"Src/usbd_conf.o" -o "Src/usbd_conf.o" "../Src/usbd_conf.c"
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+Invoking: MCU GCC Compiler
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Src/usbd_custom_hid_if.d" -MT"Src/usbd_custom_hid_if.o" -o "Src/usbd_custom_hid_if.o" "../Src/usbd_custom_hid_if.c"
+Building file: ../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Src/usbd_desc.d" -MT"Src/usbd_desc.o" -o "Src/usbd_desc.o" "../Src/usbd_desc.c"
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.d" -MT"Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.o" -o "Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.o" "../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c"
+../Src/main.c: In function 'main':
+../Src/main.c:239:20: warning: unused variable 'res' [-Wunused-variable]
+  HAL_StatusTypeDef res;
+                    ^
+../Src/usbd_desc.c: In function 'USBD_FS_ProductStrDescriptor':
+../Src/usbd_desc.c:63:36: warning: pointer targets in passing argument 1 of 'USBD_GetString' differ in signedness [-Wpointer-sign]
+ #define USBD_PRODUCT_STRING_FS     "DaBit 3D printer auxiliary controller"
+                                    ^
+../Src/usbd_desc.c:204:21: note: in expansion of macro 'USBD_PRODUCT_STRING_FS'
+     USBD_GetString (USBD_PRODUCT_STRING_FS, USBD_StrDesc, length);
+                     ^
+In file included from /home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:40:0,
+                 from ../Src/usbd_desc.c:36:
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:93:6: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ void USBD_GetString         (uint8_t *desc, uint8_t *unicode, uint16_t *len);
+      ^
+../Src/usbd_desc.c:63:36: warning: pointer targets in passing argument 1 of 'USBD_GetString' differ in signedness [-Wpointer-sign]
+ #define USBD_PRODUCT_STRING_FS     "DaBit 3D printer auxiliary controller"
+                                    ^
+../Src/usbd_desc.c:208:21: note: in expansion of macro 'USBD_PRODUCT_STRING_FS'
+     USBD_GetString (USBD_PRODUCT_STRING_FS, USBD_StrDesc, length);    
+                     ^
+In file included from /home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:40:0,
+                 from ../Src/usbd_desc.c:36:
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:93:6: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ void USBD_GetString         (uint8_t *desc, uint8_t *unicode, uint16_t *len);
+      ^
+../Src/usbd_desc.c: In function 'USBD_FS_ManufacturerStrDescriptor':
+../Src/usbd_desc.c:61:38: warning: pointer targets in passing argument 1 of 'USBD_GetString' differ in signedness [-Wpointer-sign]
+ #define USBD_MANUFACTURER_STRING     "DaBit"
+                                      ^
+../Src/usbd_desc.c:222:19: note: in expansion of macro 'USBD_MANUFACTURER_STRING'
+   USBD_GetString (USBD_MANUFACTURER_STRING, USBD_StrDesc, length);
+                   ^
+In file included from /home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:40:0,
+                 from ../Src/usbd_desc.c:36:
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:93:6: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ void USBD_GetString         (uint8_t *desc, uint8_t *unicode, uint16_t *len);
+      ^
+../Src/usbd_desc.c: In function 'USBD_FS_SerialStrDescriptor':
+../Src/usbd_desc.c:64:41: warning: pointer targets in passing argument 1 of 'USBD_GetString' differ in signedness [-Wpointer-sign]
+ #define USBD_SERIALNUMBER_STRING_FS     "00000000001B"
+                                         ^
+../Src/usbd_desc.c:237:21: note: in expansion of macro 'USBD_SERIALNUMBER_STRING_FS'
+     USBD_GetString (USBD_SERIALNUMBER_STRING_FS, USBD_StrDesc, length);
+                     ^
+In file included from /home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:40:0,
+                 from ../Src/usbd_desc.c:36:
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:93:6: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ void USBD_GetString         (uint8_t *desc, uint8_t *unicode, uint16_t *len);
+      ^
+../Src/usbd_desc.c:64:41: warning: pointer targets in passing argument 1 of 'USBD_GetString' differ in signedness [-Wpointer-sign]
+ #define USBD_SERIALNUMBER_STRING_FS     "00000000001B"
+                                         ^
+../Src/usbd_desc.c:241:21: note: in expansion of macro 'USBD_SERIALNUMBER_STRING_FS'
+     USBD_GetString (USBD_SERIALNUMBER_STRING_FS, USBD_StrDesc, length);    
+                     ^
+In file included from /home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:40:0,
+                 from ../Src/usbd_desc.c:36:
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:93:6: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ void USBD_GetString         (uint8_t *desc, uint8_t *unicode, uint16_t *len);
+      ^
+../Src/usbd_desc.c: In function 'USBD_FS_ConfigStrDescriptor':
+../Src/usbd_desc.c:65:42: warning: pointer targets in passing argument 1 of 'USBD_GetString' differ in signedness [-Wpointer-sign]
+ #define USBD_CONFIGURATION_STRING_FS     "Custom HID Config"
+                                          ^
+../Src/usbd_desc.c:257:21: note: in expansion of macro 'USBD_CONFIGURATION_STRING_FS'
+     USBD_GetString (USBD_CONFIGURATION_STRING_FS, USBD_StrDesc, length);
+                     ^
+In file included from /home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:40:0,
+                 from ../Src/usbd_desc.c:36:
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:93:6: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ void USBD_GetString         (uint8_t *desc, uint8_t *unicode, uint16_t *len);
+      ^
+../Src/usbd_desc.c:65:42: warning: pointer targets in passing argument 1 of 'USBD_GetString' differ in signedness [-Wpointer-sign]
+ #define USBD_CONFIGURATION_STRING_FS     "Custom HID Config"
+                                          ^
+../Src/usbd_desc.c:261:21: note: in expansion of macro 'USBD_CONFIGURATION_STRING_FS'
+     USBD_GetString (USBD_CONFIGURATION_STRING_FS, USBD_StrDesc, length); 
+                     ^
+In file included from /home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:40:0,
+                 from ../Src/usbd_desc.c:36:
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:93:6: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ void USBD_GetString         (uint8_t *desc, uint8_t *unicode, uint16_t *len);
+      ^
+../Src/usbd_desc.c: In function 'USBD_FS_InterfaceStrDescriptor':
+../Src/usbd_desc.c:66:38: warning: pointer targets in passing argument 1 of 'USBD_GetString' differ in signedness [-Wpointer-sign]
+ #define USBD_INTERFACE_STRING_FS     "Custom HID Interface"
+                                      ^
+../Src/usbd_desc.c:277:21: note: in expansion of macro 'USBD_INTERFACE_STRING_FS'
+     USBD_GetString (USBD_INTERFACE_STRING_FS, USBD_StrDesc, length);
+                     ^
+In file included from /home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:40:0,
+                 from ../Src/usbd_desc.c:36:
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:93:6: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ void USBD_GetString         (uint8_t *desc, uint8_t *unicode, uint16_t *len);
+      ^
+../Src/usbd_desc.c:66:38: warning: pointer targets in passing argument 1 of 'USBD_GetString' differ in signedness [-Wpointer-sign]
+ #define USBD_INTERFACE_STRING_FS     "Custom HID Interface"
+                                      ^
+../Src/usbd_desc.c:281:21: note: in expansion of macro 'USBD_INTERFACE_STRING_FS'
+     USBD_GetString (USBD_INTERFACE_STRING_FS, USBD_StrDesc, length);
+                     ^
+In file included from /home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:40:0,
+                 from ../Src/usbd_desc.c:36:
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h:93:6: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ void USBD_GetString         (uint8_t *desc, uint8_t *unicode, uint16_t *len);
+      ^
+Finished building: ../Src/usb_device.c
+ 
+Building file: ../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c
+Invoking: MCU GCC Compiler
 Finished building: ../Src/usbd_custom_hid_if.c
  
+Building file: ../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.d" -MT"Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.o" -o "Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.o" "../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c"
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.d" -MT"Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.o" -o "Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.o" "../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c"
+Finished building: ../Src/stm32f1xx_it.c
+Finished building: ../Src/usbd_desc.c
+ 
+Building file: ../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Src/usbd_customhid.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Src/usbd_customhid.d" -MT"Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Src/usbd_customhid.o" -o "Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Src/usbd_customhid.o" "../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Src/usbd_customhid.c"
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c"
+Finished building: ../Src/stm32f1xx_hal_msp.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.c"
+Finished building: ../Src/usbd_conf.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.c
+Finished building: ../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c
+Invoking: MCU GCC Compiler
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c"
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.c"
+Finished building: ../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c"
 Finished building: ../Src/main.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c"
+Finished building: ../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Src/usbd_customhid.c
+ 
+Finished building: ../Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c"
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd_ex.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd_ex.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd_ex.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd_ex.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd_ex.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c"
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc_ex.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc_ex.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc_ex.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc_ex.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc_ex.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd_ex.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi_ex.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi_ex.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi_ex.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi_ex.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi_ex.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd.c
+ 
+Building file: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.c
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi_ex.c
+ 
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.d" -MT"Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.o" -o "Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.o" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.c"
+Building file: ../Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/startup_stm32f103xb.s
+Invoking: MCU GCC Assembler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-as -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -g -o "Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/startup_stm32f103xb.o" "../Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/startup_stm32f103xb.s"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc_ex.c
+ 
+Building file: ../Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c
+Invoking: MCU GCC Compiler
+/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -O2 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.d" -MT"Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.o" -o "Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.o" "../Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c"
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c
+Finished building: ../Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/startup_stm32f103xb.s
+ 
+ 
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c
+ 
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc.c
+ 
+Finished building: ../Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c
+ 
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.c
+ 
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c
+ 
+Finished building: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c
  
 Building target: auxcontroller.elf
 Invoking: MCU GCC Linker
@@ -22,5 +322,8 @@ Generating binary and Printing size information:
 arm-none-eabi-objcopy -O binary "auxcontroller.elf" "auxcontroller.bin"
 arm-none-eabi-size "auxcontroller.elf"
    text	   data	    bss	    dec	    hex	filename
-  27024	    368	   5416	  32808	   8028	auxcontroller.elf
+  26220	    368	   5528	  32116	   7d74	auxcontroller.elf
  
+17:49:25 **** Incremental Build of configuration Debug for project STM32 ****
+make -j8 all 
+make: Nothing to be done for 'all'.

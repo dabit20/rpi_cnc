@@ -40,7 +40,7 @@
 /* Communicate a PID control value. This is also used for fan PWM; then the PID coeffs are 0.0f and only FF0 is used */
 #define PKT_PIDCONTROL 10
 typedef struct {
-	uint8_t len;			// packet length in bytes, including this one.
+	uint8_t len;			// packet length in bytes, including this one. Size=32
 	uint8_t id;				// id=PKT_PIDCONTROL
 	uint8_t outID;			// Output channel ID
 	int8_t inID;			// Input channel ID used for feedback. Feedback is set to 0.0 when this is negative
@@ -55,7 +55,7 @@ typedef struct {
 /* Communicate a thermistor setup */
 #define PKT_THERMISTOR_SETUP 20
 typedef struct {
-	uint8_t len;			// packet length in bytes, including this one.
+	uint8_t len;			// packet length in bytes, including this one. Size=31
 	uint8_t id;				// id=PKT_THERMISTOR_SETUP
 	uint8_t ThermistorID;	// Number of the thermistor
 	float RefResistorValue;	// Value of the reference resistor

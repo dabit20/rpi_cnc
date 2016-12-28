@@ -1,9 +1,9 @@
 component auxcontroller 						"Driver for the STM32F103 Minimum System Development Board based auxiliary IO controller";
 /* Note: array index for chan_xx must match NROUTCHANNELS in commpackets.h */
-param rw float chan_Kp-# [9]=0.0				"Output channel PID Kp";
-param rw float chan_Ki-# [9]=0.0				"Output channel PID Ki";
-param rw float chan_Kd-# [9]=0.0				"Output channel PID Kd";
-param rw float chan_FF0-# [9]=0.0				"Output channel PID 0th order feedforward";
+param rw float chan_Kp-# [9]=0.0			"Output channel PID Kp";
+param rw float chan_Ki-# [9]=0.0			"Output channel PID Ki";
+param rw float chan_Kd-# [9]=0.0			"Output channel PID Kd";
+param rw float chan_FF0-# [9]=0.0			"Output channel PID 0th order feedforward";
 param rw float chan_minlim-# [9]=0.0			"Output channel PID minimum output";
 param rw float chan_maxlim-# [9]=1.0			"Output channel PID maximum output";
 param rw signed chan_feedbackid-# [9]=-1		"Output channel PID feedback device ID. 0-5 are thermistors, 6-7 are GP analog inputs, negative values translate to 0.0";
@@ -11,11 +11,13 @@ pin in float chan_command-# [9]=0.0  			"Output channel command. This is tempera
 /* Note: array index for thermistor_xx must match NRTHERMISTORS in commpackets.h */
 param rw float thermistor_refresistor-# [6] = 4700.0	"Thermistor reference resistor in Ohms";
 param rw float thermistor_mintemp-# [6] = 0.0			"Thermistor valid minimum temperature";
-param rw float thermistor_maxtemp-# [6] = 60.0		"Thermistor valid maximum temperature";
+param rw float thermistor_maxtemp-# [6] = 80.0		"Thermistor valid maximum temperature";
 param rw float thermistor_shhA-# [6] = 0.000722378300319346	"Thermistor Steinhart-Hart coefficient A (ln^0)";
 param rw float thermistor_shhB-# [6] = 0.000216301852054578	"Thermistor Steinhart-Hart coefficient B (ln^1)";
 param rw float thermistor_shhC-# [6] = 0.0					"Thermistor Steinhart-Hart coefficient C (ln^2)";
 param rw float thermistor_shhD-# [6] = 9.2641025635702e-08	"Thermistor Steinhart-Hart coefficient D (ln^3)";
+
+param rw unsigned debug_receptionctr = 0		"Packets received counter for debugging";
 
 pin out float thermistor_temperature-# [6]		"Measured thermistor temperature";
 pin out bit thermistor-isvalid-# [6]			"Temperature measurement valid";
@@ -162,26 +164,28 @@ void userinit(int argc, char **argv)
 }
 
 void user_mainloop(void) {
-	int outchannel_ctr=0, thermistor_ctr=0, ret;
-	uint8_t idx=0, *data, selector=0, thermistorid;
+	static int outchannel_ctr=0, thermistor_ctr=0, ret;
+	static uint8_t idx=0, *data, selector=0, thermistorid;
 	sleep (1);
 	while(1) {
 		FOR_ALL_INSTS() {
 			/* Fill transmit packet. */
 			xmitbuf[0] = 0;
-			if (++selector & 0x01) {
+			if ((++selector & 0x01) == 0x01) {
+				//fprintf (stderr, "thermistor setup, id=%d\n", thermistor_ctr);
 				transmitpkt1.ts.ThermistorID = thermistor_ctr;
 				transmitpkt1.ts.RefResistorValue = thermistor_refresistor(thermistor_ctr);
 				transmitpkt1.ts.SteinhartHart[0] = thermistor_shhA(thermistor_ctr);
 				transmitpkt1.ts.SteinhartHart[1] = thermistor_shhB(thermistor_ctr);
 				transmitpkt1.ts.SteinhartHart[2] = thermistor_shhC(thermistor_ctr);
-				transmitpkt1.ts.SteinhartHart[3] = thermistor_shhA(thermistor_ctr);
+				transmitpkt1.ts.SteinhartHart[3] = thermistor_shhD(thermistor_ctr);
 				transmitpkt1.ts.ValidTempMin = thermistor_mintemp(thermistor_ctr);
 				transmitpkt1.ts.ValidTempMax = thermistor_maxtemp(thermistor_ctr);
 				memcpy (xmitbuf+1, &transmitpkt1, sizeof(_transmitpkt1));
 				if (++thermistor_ctr >= NRTHERMISTORS)
 					thermistor_ctr = 0;
 			} else {
+				//fprintf (stderr, "PID setup, id=%d\n", outchannel_ctr);
 				transmitpkt2.pc.outID = outchannel_ctr;
 				transmitpkt2.pc.inID = chan_feedbackid(outchannel_ctr);
 				transmitpkt2.pc.command = chan_command(outchannel_ctr);
@@ -191,14 +195,16 @@ void user_mainloop(void) {
 				transmitpkt2.pc.coeffFF0 = chan_FF0(outchannel_ctr);
 				transmitpkt2.pc.minlim = chan_minlim(outchannel_ctr);
 				transmitpkt2.pc.maxlim = chan_maxlim(outchannel_ctr);
-				memcpy (xmitbuf+1, &transmitpkt1, sizeof(_transmitpkt2));
+				memcpy (xmitbuf+1, &transmitpkt2, sizeof(_transmitpkt2));
 				if (++outchannel_ctr >= NROUTCHANNELS)
 					outchannel_ctr = 0;
 			}			
 			/* Send to USB device */
-			ret=write(usbfd, xmitbuf, 65);
-			if (ret != 65) {
-				fprintf(stderr,"USB transmit fail: %d bytes transmitted\n", ret);
+			if (usbfd>0) {
+				ret=write(usbfd, xmitbuf, 65);
+				if (ret != 65) {
+					fprintf(stderr,"USB transmit fail: %d bytes transmitted\n", ret);
+				}
 			}
 			/* See if there is data available */
 			ret = read(usbfd, xmitbuf, 64);
@@ -213,6 +219,7 @@ void user_mainloop(void) {
 							if (thermistorid < NRTHERMISTORS) {
 								thermistor_isvalid(thermistorid) = ((sPkt_ThermistorValue *)data)->bIsValid;
 								thermistor_temperature(thermistorid) = ((sPkt_ThermistorValue *)data)->TempCelcius;
+								debug_receptionctr = (debug_receptionctr + 1);
 							}
 						break;
 						/* End of data frame command */

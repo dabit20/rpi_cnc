@@ -8,11 +8,12 @@
 #ifndef HOUSEKEEPING_H_
 #define HOUSEKEEPING_H_
 
-#define TICKS_PER_SEC 30000								/* Timer ISR rate, equal to DC_FAST modulator speed. Must be higher than 1100Hz */
+#define TICKS_PER_SEC 30000							/* Timer ISR rate, equal to DC_FAST modulator speed. Must be higher than 1100Hz */
 #define LOWSPEED_DIV ((uint16_t)(TICKS_PER_SEC/105.0))	/* divisor used for the lowspeed PWM at 105Hz */
 #define COMM_TIMEOUT (10 * TICKS_PER_SEC)				/* we want a packet at least every 10 seconds */
 
 #define NR_ADC_CHANNELS 8								/* Number of enabled ADC channels */
+#define NR_AVG_POINTS 8									/* Number of samples to average */
 
 #ifndef bool
 typedef uint8_t bool;

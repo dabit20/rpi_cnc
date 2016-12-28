@@ -72,7 +72,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
 
-volatile uint16_t ADCresults[NR_ADC_CHANNELS];	/* ADC result buffer, filled in with DMA */
+volatile uint16_t ADCresults[NR_AVG_POINTS][NR_ADC_CHANNELS], avgctr=0;	/* ADC result buffer, filled in with DMA */
 volatile bool bGotUSBData = false, bGotADCResults = false, IsRunning=false;
 volatile int32_t CommTimeoutCtr;		/* Communications timeout downcounter */
 uint8_t USBTxBuf[64];
@@ -97,14 +97,19 @@ typedef struct {
 
 /* ADC conversion complete. Set flag, and let main() handle the results and start a new conversion */
 void HAL_ADC_ConvCpltCallback ( ADC_HandleTypeDef *hadc) {
-	bGotADCResults = true;
+	static uint8_t ctr=0;
+	if (avgctr==(NR_AVG_POINTS-1))
+		bGotADCResults = true;
+	if (++ctr == 0)
+		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 }
 
 /* Systick callback. Called at a 1000Hz rate */
 void SysTick_callback(void)
 {
-	float output = 0.0f, err;
-	static uint8_t pidctr=0;
+	float output = 0.0f, err, adcavg;
+	static uint8_t pidctr=0, adcconv_ctr=0;
+	int j;
 	bool bEvalPID;
 	uint32_t incr;
 	// PID sample time. This routine is called at a 1000Hz rate
@@ -124,7 +129,12 @@ void SysTick_callback(void)
 	}
 	// Is it an analog input?
 	else if (PID[pidctr].inID >= NRTHERMISTORS && PID[pidctr].inID < (NRTHERMISTORS+NRANALOG)) {
-		PID[pidctr].feedback = (float)ADCresults[PID[pidctr].inID] / 4095.0f;
+		adcavg = 0.0f;
+		for (j=0;j<NR_AVG_POINTS;j++) {
+			adcavg += (float)ADCresults[j][PID[pidctr].inID];
+		}
+		adcavg *= (1.0f/(float)NR_AVG_POINTS);
+		PID[pidctr].feedback = adcavg;
 		bEvalPID = true;
 	}
 	// Run with feedback = 0.0f? (testing, controlling the modulator output directly using P=1.0f)
@@ -150,6 +160,7 @@ void SysTick_callback(void)
 		}
 	}
 	// Update modulator
+	PID[pidctr].output = output;
 	incr = (uint32_t)(output * 8388608.0f);
 	__disable_irq();
 	modulator[pidctr].increment = incr;
@@ -157,7 +168,12 @@ void SysTick_callback(void)
 	// Update PID instance counter
 	if (++pidctr >= NROUTCHANNELS)
 		pidctr=0;
-
+	// Start a ADC/DMA cycle
+	if ((++adcconv_ctr & 0x03) == 0x03) {
+		if (++avgctr >= NR_AVG_POINTS)
+			avgctr=0;
+		HAL_ADC_Start_DMA(&hadc1, (uint32_t *)&ADCresults[avgctr][0], NR_ADC_CHANNELS);
+	}
 }
 
 /* Timer callback. This is where we run our pulse engine.
@@ -168,7 +184,7 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)
 	int i;
 	/* Handle running state and comm timeout */
 	if (!IsRunning) {
-		// Nor running -> outputs disabled
+		// Not running -> outputs disabled
 		for (i=0;i<NROUTCHANNELS;i++) {
 			HAL_GPIO_WritePin(modulator[i].GPIOport, modulator[i].GPIOpin, GPIO_PIN_RESET);
 		}
@@ -186,7 +202,9 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)
 		}
 		/* Decrement lowspeed divisor counter. Check for 0 later */
 		lowspeedctr--;
+HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 		/* Do modulators. */
+#if 1
 		for (i=0;i<NROUTCHANNELS;i++) {
 			/* modulator needs evaluation? */
 			if (modulator[i].Speed == DC_FAST || (modulator[i].Speed == AC_SLOW && !lowspeedctr)) {
@@ -194,11 +212,15 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)
 				if (modulator[i].accumulator >= 0x00800000) {
 					modulator[i].accumulator -= 0x00800000;
 					HAL_GPIO_WritePin(modulator[i].GPIOport, modulator[i].GPIOpin, GPIO_PIN_SET);
+					//if (i==3) HAL_GPIO_WritePin (LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
+
 				} else {
 					HAL_GPIO_WritePin(modulator[i].GPIOport, modulator[i].GPIOpin, GPIO_PIN_RESET);
+					//if (i==3) HAL_GPIO_WritePin (LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
 				}
 			}
 		}
+#endif
 		/* Wrap lowspeed counter if it reached 0 */
 		if (lowspeedctr==0)
 			lowspeedctr = LOWSPEED_DIV;
@@ -212,8 +234,9 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 	GPIO_InitTypeDef GPIO_InitStruct;
-	int i;
-	float ntcres, logntcres, invT;
+	int i,j;
+	float adcavg, ntcres, logntcres, invT;
+	HAL_StatusTypeDef res;
 	// Packet used to return thermistor temps to host
 	_d2h_pkt1 d2h_pkt1;
 	CommTimeoutCtr = 0;
@@ -243,8 +266,10 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 	// Reset ADC result buffer
-	for (i=0;i<NR_ADC_CHANNELS;i++)
-		ADCresults[i] = 0;
+	for (i=0;i<NR_ADC_CHANNELS;i++) {
+		for (j=0;j<NR_AVG_POINTS;j++)
+			ADCresults[j][i] = 0;
+	}
 	// Initialise modulator data structures
 	// 12VDC outputs
 	modulator[OUTID_DC12V_1].GPIOpin = DC12V_PDM1_Pin; modulator[OUTID_DC12V_1].GPIOport = DC12V_PDM1_GPIO_Port; modulator[OUTID_DC12V_1].Speed = DC_FAST;
@@ -322,14 +347,15 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim2);
 
   // Start hard PWM. Not used yet.
+#if 0
   HAL_TIM_Base_Start(&htim4);
   HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_2);
   HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
-
+#endif
   // Start ADC for the first time
-  HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADCresults, NR_ADC_CHANNELS);
+  // (now done in systick) HAL_ADC_Start_DMA(&hadc1, (uint32_t *)&ADCresults[avgctr][0], NR_ADC_CHANNELS);
 
   /* USER CODE END 2 */
 
@@ -344,22 +370,32 @@ int main(void)
 	  // Did we receive ADC data? If so, calculate NTC temperatures
 	  if (bGotADCResults) {
 		  for (i=0;i<NRTHERMISTORS;i++) {
-			  ntcres = thermistor[i].RefResistorValue * ((float)ADCresults[i] / (float)(4096-ADCresults[i]));
-			  logntcres = log(ntcres);
-			  invT = thermistor[i].SteinhartHart[0] + logntcres*thermistor[i].SteinhartHart[1] + logntcres*logntcres*thermistor[i].SteinhartHart[2] + logntcres*logntcres*logntcres*thermistor[i].SteinhartHart[3];
-			  invT = 1.0f/invT;
-			  invT -= 273.15f;
-			  if (invT >= thermistor[i].ValidTempMin && invT <= thermistor[i].ValidTempMax) {
-				  thermistor[i].bIsValid = true;
-				  thermistor[i].Temperature = invT;
+			  adcavg = 0.0f;
+			  for (j=0;j<NR_AVG_POINTS;j++)
+				  adcavg += (float)ADCresults[j][i];
+			  adcavg *= (1.0f/(float)NR_AVG_POINTS);
+			  if (adcavg > 3.0f && adcavg < 4092.0f) {
+				  //ntcres = thermistor[i].RefResistorValue * ((float)(4095-ADCresults[i]) / (float)(ADCresults[i]+1));
+				  ntcres = thermistor[i].RefResistorValue * ((4095.0f / adcavg)-1.0f);
+				  logntcres = log(ntcres);
+				  invT = thermistor[i].SteinhartHart[0] + logntcres*thermistor[i].SteinhartHart[1] + logntcres*logntcres*thermistor[i].SteinhartHart[2] + logntcres*logntcres*logntcres*thermistor[i].SteinhartHart[3];
+				  invT = 1.0f/invT;
+				  invT -= 273.15f;
+				  if (invT >= thermistor[i].ValidTempMin && invT <= thermistor[i].ValidTempMax) {
+					  thermistor[i].bIsValid = true;
+					  thermistor[i].Temperature = invT;
+				  } else {
+					  thermistor[i].bIsValid = false;
+					  thermistor[i].Temperature = invT;
+				  }
 			  } else {
+				  // ADC value is bogus.
 				  thermistor[i].bIsValid = false;
-				  thermistor[i].Temperature = 0.0f;
+				  thermistor[i].Temperature = -1234.0f;
 			  }
 		  }
 		  // restart conversion
 		  bGotADCResults = false;
-		  HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADCresults, NR_ADC_CHANNELS);
 	  }
 	  // If we received data, we setup a return transfer.
 	  if (bGotUSBData) {
@@ -459,7 +495,7 @@ static void MX_ADC1_Init(void)
     */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();

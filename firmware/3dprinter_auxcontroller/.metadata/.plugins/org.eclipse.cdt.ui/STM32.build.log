@@ -1,29 +1,6 @@
-12:05:05 **** Incremental Build of configuration Debug for project STM32 ****
+17:49:25 **** Incremental Build of configuration Debug for project STM32 ****
 make -j8 all 
-Building file: ../Src/main.c
-Building file: ../Src/usbd_custom_hid_if.c
-Invoking: MCU GCC Compiler
-Invoking: MCU GCC Compiler
-/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Debug
-arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Src/main.d" -MT"Src/main.o" -o "Src/main.o" "../Src/main.c"
-/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Debug
-arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -D__weak="__attribute__((weak))" -D__packed="__attribute__((__packed__))" -DUSE_HAL_DRIVER -DSTM32F103xB -I/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/include -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Include" -I"/home/dabit/Dropbox/ARM_development/workspace/3dprinter_auxcontroller/STM32/Drivers/CMSIS/Device/ST/STM32F1xx/Include" -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"Src/usbd_custom_hid_if.d" -MT"Src/usbd_custom_hid_if.o" -o "Src/usbd_custom_hid_if.o" "../Src/usbd_custom_hid_if.c"
-Finished building: ../Src/usbd_custom_hid_if.c
- 
-Finished building: ../Src/main.c
- 
-Building target: auxcontroller.elf
-Invoking: MCU GCC Linker
-arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -L/home/dabit/Ac6/SystemWorkbench/plugins/fr.ac6.mcu.externaltools.arm-none.linux64_1.12.0.201611241417/tools/compiler/arm-none-eabi/lib/thumb -specs=nosys.specs -specs=nano.specs -T"../STM32F103C8Tx_FLASH.ld" -Wl,-Map=output.map -Wl,--gc-sections -lm -o "auxcontroller.elf" @"objects.list"  -lc -lm
-Finished building target: auxcontroller.elf
- 
-make --no-print-directory post-build
-Generating binary and Printing size information:
-arm-none-eabi-objcopy -O binary "auxcontroller.elf" "auxcontroller.bin"
-arm-none-eabi-size "auxcontroller.elf"
-   text	   data	    bss	    dec	    hex	filename
-  27024	    368	   5416	  32808	   8028	auxcontroller.elf
- 
+make: Nothing to be done for 'all'.
 
-12:05:05 Build Finished (took 417ms)
+17:49:25 Build Finished (took 65ms)
 

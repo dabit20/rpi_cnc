@@ -176,6 +176,7 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 	USBD_CUSTOM_HID_HandleTypeDef *hhid = (USBD_CUSTOM_HID_HandleTypeDef *)hUsbDeviceFS.pClassData;
 	uint8_t *data;
 	uint8_t idx=0, loopctr=16;
+#if 1
 	while (idx<64 && --loopctr) {
 		data = &hhid->Report_buf[idx];
 		/* Determine packet type and process the packet */
@@ -233,6 +234,12 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 		/* go to next packet */
 		idx += data[0];
 	}
+#else
+	__disable_irq();
+	bGotUSBData = true;
+	CommTimeoutCtr = COMM_TIMEOUT;
+	__enable_irq();
+#endif
 
   return (0);
   /* USER CODE END 6 */ 
