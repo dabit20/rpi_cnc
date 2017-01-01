@@ -1,0 +1,20 @@
+loadrt threads name1=test-thread period1=4000000
+loadusr -W auxcontroller
+loadrt siggen
+
+#addf siggen.0.update test-thread
+
+#setp siggen.0.frequency 0.25
+#setp siggen.0.amplitude 20.0
+
+# first NTC
+setp auxcontroller.0.chan-feedbackid-3 0
+setp auxcontroller.0.thermistor-maxtemp-0 230
+
+# servo to 35 degrees C
+setp auxcontroller.0.chan-Kp-3 0.05
+setp auxcontroller.0.chan-Ki-3 0.002
+setp auxcontroller.0.chan-command-3 35.0
+start
+
+#loadusr halscope
