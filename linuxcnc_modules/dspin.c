@@ -238,7 +238,14 @@ static uint32_t * initMapMem(int fd, uint32_t addr, uint32_t len)
 }
 /* Taken from hm2_rpspi.c */
 int rtapi_open_as_root(const char *filename, int mode) {
-		setfsuid(geteuid());
+	
+	if (geteuid() != 0) {
+		fprintf (stderr, "Debug: euid: %d uid %d\n", geteuid(), getuid());
+		fprintf (stderr, "EUID is not 0 (root). Trying seteuid()...\n");
+		seteuid(0);
+		fprintf (stderr, "euid: %d uid %d\n", geteuid(), getuid());
+	}		
+	setfsuid(geteuid());
 	int r = open(filename, mode);
 	setfsuid(getuid());
 	return r;
