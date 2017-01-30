@@ -1,6 +1,0 @@
-17:49:25 **** Incremental Build of configuration Debug for project STM32 ****
-make -j8 all 
-make: Nothing to be done for 'all'.
-
-17:49:25 Build Finished (took 65ms)
-
