@@ -1,0 +1,17 @@
+# HAL file for the DaBit3D printer
+
+loadrt [KINS]KINEMATICS
+loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS 
+
+addf motion-command-handler servo-thread
+addf motion-controller servo-thread
+
+# until we have all hardware up and running, link the joint command values back to feedback
+net xpos-cmd joint.0.motor-pos-cmd => joint.0.motor-pos-fb
+net ypos-cmd joint.1.motor-pos-cmd => joint.1.motor-pos-fb
+net zpos-cmd joint.2.motor-pos-cmd => joint.2.motor-pos-fb
+net apos-cmd joint.3.motor-pos-cmd => joint.3.motor-pos-fb
+
+# Estop chain
+net estop-out <= iocontrol.0.user-enable-out
+net estop-out => iocontrol.0.emc-enable-in

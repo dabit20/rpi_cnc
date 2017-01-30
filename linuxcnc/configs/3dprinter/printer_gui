@@ -45,8 +45,11 @@ class printer_gui(object):
     self.status.poll()
     jogheel_newvalue = self.builder.get_object("jogwheel").get_value()
     if jogheel_newvalue != self.jogwheel_oldvalue:
-    	if self.status.axis[self.selectedaxis]['homed']:
-    		self.command.jog(self.emc.JOG_INCREMENT,self.selectedaxis,100,(jogheel_newvalue-self.jogwheel_oldvalue)*0.1)
+    	# Switch to manual mode if currently not in manual mode
+    	if self.status.task_mode != self.emc.MODE_MANUAL:
+    		self.command.mode(self.emc.MODE_MANUAL);
+    	if self.status.joint[self.selectedaxis]['homed']:
+    		self.command.jog(self.emc.JOG_INCREMENT,self.selectedaxis,False,100,(jogheel_newvalue-self.jogwheel_oldvalue)*0.1)
     self.jogwheel_oldvalue = jogheel_newvalue
     
     return True
