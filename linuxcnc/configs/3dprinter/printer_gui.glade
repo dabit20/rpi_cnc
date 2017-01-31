@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gladevcp 0.0 -->
+  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="EMC_Action_Home" id="vcp_action_home1"/>
+  <object class="EMC_Action_Open" id="vcp_action_open1"/>
+  <object class="EMC_Action_Run" id="vcp_action_run1"/>
+  <object class="EMC_Action_Pause" id="vcp_action_run2"/>
+  <object class="EMC_Action_Stop" id="vcp_action_stop1"/>
+  <object class="EMC_ToggleAction_ESTOP" id="vcp_toggleaction_estop1"/>
+  <object class="EMC_ToggleAction_Power" id="vcp_toggleaction_power1"/>
+  <object class="GtkWindow" id="window1">
+    <property name="can_focus">False</property>
+    <property name="default_width">750</property>
+    <property name="default_height">400</property>
+    <signal name="destroy" handler="on_window1_destroy" swapped="no"/>
+    <child>
+      <object class="GtkHBox" id="hbox1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkNotebook" id="notebook1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <child>
+              <object class="GtkHBox" id="hbox2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkVBox" id="vbox1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkHBox" id="hbox3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkVBox" id="vbox3">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="HAL_ToggleButton" id="axisx_button">
+                                <property name="label" translatable="yes">X</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="use_action_appearance">False</property>
+                                <signal name="toggled" handler="on_xaxis_button_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="HAL_ToggleButton" id="axisy_button">
+                                <property name="label" translatable="yes">Y</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="use_action_appearance">False</property>
+                                <signal name="toggled" handler="on_yaxis_button_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="HAL_ToggleButton" id="axisz_button">
+                                <property name="label" translatable="yes">Z</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="use_action_appearance">False</property>
+                                <signal name="toggled" handler="on_zaxis_button_clicked" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkVBox" id="vbox4">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="HAL_Button" id="hal_jogplus">
+                                <property name="label" translatable="yes">+</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="use_action_appearance">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="JogWheel" id="jogwheel">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="cpr">100</property>
+                                <property name="show_counts">False</property>
+                                <property name="size">120</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="HAL_Button" id="hal_jogmin">
+                                <property name="label" translatable="yes">-</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="use_action_appearance">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkVBox" id="vbox5">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="Combi_DRO" id="combi_dro_X">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="abs_color">#00000000ffff</property>
+                                <property name="actual">False</property>
+                                <property name="dtg_color">#ffffffff0000</property>
+                                <property name="font_size">16</property>
+                                <property name="homed_color">#0000ffff0000</property>
+                                <property name="imperial_text_template">%9.1f</property>
+                                <property name="mm_text_template">%10.1f</property>
+                                <property name="rel_color">#000000000000</property>
+                                <property name="toggle_readout">False</property>
+                                <property name="unhomed_color">#ffff00000000</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="Combi_DRO" id="combi_dro_Y">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="abs_color">#00000000ffff</property>
+                                <property name="actual">False</property>
+                                <property name="dtg_color">#ffffffff0000</property>
+                                <property name="font_size">16</property>
+                                <property name="homed_color">#0000ffff0000</property>
+                                <property name="imperial_text_template">%9.1f</property>
+                                <property name="joint_number">1</property>
+                                <property name="mm_text_template">%10.1f</property>
+                                <property name="rel_color">#000000000000</property>
+                                <property name="toggle_readout">False</property>
+                                <property name="unhomed_color">#ffff00000000</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="Combi_DRO" id="combi_dro_Z">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="abs_color">#00000000ffff</property>
+                                <property name="actual">False</property>
+                                <property name="dtg_color">#ffffffff0000</property>
+                                <property name="font_size">16</property>
+                                <property name="homed_color">#0000ffff0000</property>
+                                <property name="imperial_text_template">%9.1f</property>
+                                <property name="joint_number">2</property>
+                                <property name="mm_text_template">%10.1f</property>
+                                <property name="rel_color">#000000000000</property>
+                                <property name="toggle_readout">False</property>
+                                <property name="unhomed_color">#ffff00000000</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkHSeparator" id="hseparator1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">2</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkTable" id="table1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="n_rows">3</property>
+                        <property name="n_columns">2</property>
+                        <child>
+                          <object class="HAL_Meter" id="hal_meter_extrudertemp">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="bg_color">#ffffffffffff</property>
+                            <property name="force_size">50</property>
+                            <property name="majorscale">20</property>
+                            <property name="max">280</property>
+                            <property name="min">100</property>
+                            <property name="minorscale">5</property>
+                            <property name="value">164</property>
+                            <property name="z0_border">230</property>
+                            <property name="z0_color">#0000ffff0000</property>
+                            <property name="z1_border">250</property>
+                            <property name="z1_color">#ffffffff0000</property>
+                            <property name="z2_color">#ffff00000000</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkVBox" id="vbox6">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkLabel" id="label4">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Extruder temperatuur</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="padding">5</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="SpeedControl" id="extruder_settemp">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="color">#ffff81811616</property>
+                                <property name="increment">5</property>
+                                <property name="max">250</property>
+                                <property name="min">100</property>
+                                <property name="template">%.0f</property>
+                                <property name="unit">°C</property>
+                                <property name="value">180</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="HAL_ToggleButton" id="hal_togglebutton4">
+                                <property name="label" translatable="yes">On</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="use_action_appearance">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkVBox" id="vbox7">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkLabel" id="label6">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Bouwplatform temperatuur</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="padding">5</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="SpeedControl" id="buildplatform_settemp">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="color">#ffff81811616</property>
+                                <property name="increment">5</property>
+                                <property name="max">125</property>
+                                <property name="min">30</property>
+                                <property name="template">%.0f</property>
+                                <property name="unit">°C</property>
+                                <property name="value">40</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="HAL_ToggleButton" id="hal_togglebutton5">
+                                <property name="label" translatable="yes">On</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="use_action_appearance">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="HAL_Meter" id="hal_meter_buildplatformtemp">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="bg_color">#ffffffffffff</property>
+                            <property name="force_size">50</property>
+                            <property name="majorscale">20</property>
+                            <property name="max">180</property>
+                            <property name="min">20</property>
+                            <property name="minorscale">5</property>
+                            <property name="value">110</property>
+                            <property name="z0_border">120</property>
+                            <property name="z0_color">#0000ffff0000</property>
+                            <property name="z1_border">150</property>
+                            <property name="z1_color">#ffffffff0000</property>
+                            <property name="z2_color">#ffff00000000</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkVBox" id="vbox8">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkLabel" id="label7">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Bouwruimte temperatuur</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="padding">5</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="SpeedControl" id="buildspace_settemp">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="color">#ffff81811616</property>
+                                <property name="increment">5</property>
+                                <property name="max">70</property>
+                                <property name="min">20</property>
+                                <property name="template">%.0f</property>
+                                <property name="unit">°C</property>
+                                <property name="value">25</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="HAL_ToggleButton" id="hal_togglebutton6">
+                                <property name="label" translatable="yes">On</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="use_action_appearance">False</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="top_attach">2</property>
+                            <property name="bottom_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="HAL_Meter" id="hal_meter_buildspacetemp">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="bg_color">#ffffffffffff</property>
+                            <property name="force_size">50</property>
+                            <property name="majorscale">20</property>
+                            <property name="min">20</property>
+                            <property name="minorscale">5</property>
+                            <property name="value">68</property>
+                            <property name="z0_border">70</property>
+                            <property name="z0_color">#0000ffff0000</property>
+                            <property name="z1_border">80</property>
+                            <property name="z1_color">#ffffffff0000</property>
+                            <property name="z2_color">#ffff00000000</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                            <property name="top_attach">2</property>
+                            <property name="bottom_attach">3</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow1">
+                    <property name="width_request">150</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">automatic</property>
+                    <property name="vscrollbar_policy">automatic</property>
+                    <child>
+                      <object class="EMC_SourceView" id="vcp_sourceview1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="left_margin">2</property>
+                        <property name="right_margin">2</property>
+                        <property name="show_line_numbers">True</property>
+                        <property name="show_line_marks">True</property>
+                        <property name="tab_width">4</property>
+                        <property name="auto_indent">True</property>
+                        <property name="highlight_current_line">True</property>
+                        <property name="indent_on_tab">False</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Hoofd</property>
+              </object>
+              <packing>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox9">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkVBox" id="vbox11">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkLabel" id="label5">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Voeding</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="SpeedControl" id="feedoverride">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="color">#ffff81811616</property>
+                        <property name="max">200</property>
+                        <property name="template">%.0f</property>
+                        <property name="unit">%</property>
+                        <property name="value">100</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkVBox" id="vbox10">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkLabel" id="label8">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Extruder ventilator</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">5</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="SpeedControl" id="extruderfan_setpercent">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="color">#ffff81811616</property>
+                        <property name="increment">5</property>
+                        <property name="template">%.0f</property>
+                        <property name="unit">%</property>
+                        <property name="value">25</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="HAL_ToggleButton" id="hal_togglebutton3">
+                        <property name="label" translatable="yes">On</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_action_appearance">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="label2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Extra</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkVBox" id="vbox2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">3</property>
+            <child>
+              <object class="HAL_ToggleButton" id="FS_button">
+                <property name="label" translatable="yes">FS</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="yalign">0.62000000476837158</property>
+                <signal name="toggled" handler="on_FS_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_ToggleButton" id="hal_togglebutton_estop">
+                <property name="label" translatable="yes">ESTOP</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="related_action">vcp_toggleaction_estop1</property>
+                <property name="use_action_appearance">False</property>
+                <property name="relief">half</property>
+                <property name="use_underline">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_ToggleButton" id="hal_togglebutton_on">
+                <property name="label" translatable="yes">ON</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="related_action">vcp_toggleaction_power1</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_underline">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_Button" id="button_home_all">
+                <property name="label" translatable="yes">HOME</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="related_action">vcp_action_home1</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_underline">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_Button" id="hal_button_load">
+                <property name="label" translatable="yes">OPEN</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="related_action">vcp_action_open1</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_underline">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_Button" id="hal_button_run">
+                <property name="label" translatable="yes">RUN</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="related_action">vcp_action_run1</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_underline">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="HAL_Button" id="hal_button_stop">
+                <property name="label" translatable="yes">STOP</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="related_action">vcp_action_stop1</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_underline">True</property>
+                <property name="xalign">0.4699999988079071</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">6</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
