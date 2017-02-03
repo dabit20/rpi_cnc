@@ -1,0 +1,13 @@
+# PostGUI HAL file for the DaBit3D printer. 
+# Here, the auxilairy controller support software is loaded and connected
+
+loadusr -W auxcontroller
+
+# Our extruder. NTC is connected to channel 0, heater is connected to first 24V channel (3)
+# Hook up first NTC to channel 3 (first 24V channel)
+setp auxcontroller.0.chan-feedbackid-3 0
+setp auxcontroller.0.thermistor-maxtemp-0 250
+setp auxcontroller.0.chan-Kp-3 [PID]EXTRUDER_KP
+setp auxcontroller.0.chan-Ki-3 [PID]EXTRUDER_KI
+net extruder-settemp printer_gui.extruder_settemp.value => auxcontroller.0.chan-command-3
+net extruder-actualtemp auxcontroller.0.thermistor-temperature-0 => printer_gui.hal_meter_extrudertemp
