@@ -10,6 +10,46 @@
   <object class="EMC_Action_Stop" id="vcp_action_stop1"/>
   <object class="EMC_ToggleAction_ESTOP" id="vcp_toggleaction_estop1"/>
   <object class="EMC_ToggleAction_Power" id="vcp_toggleaction_power1"/>
+  <object class="GtkImage" id="engine_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Engine.png</property>
+  </object>
+  <object class="GtkImage" id="fittowidth">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Fit to Width.png</property>
+  </object>
+  <object class="GtkImage" id="home_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Home.png</property>
+  </object>
+  <object class="GtkImage" id="openfolder_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">OpenFolder.png</property>
+  </object>
+  <object class="GtkImage" id="play_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Play.png</property>
+  </object>
+  <object class="GtkImage" id="start_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Start.png</property>
+  </object>
+  <object class="GtkImage" id="stop_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Stop.png</property>
+  </object>
+  <object class="GtkImage" id="stopsign_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Stopsign.png</property>
+  </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
     <property name="default_width">750</property>
@@ -102,6 +142,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="use_action_appearance">False</property>
+                                <signal name="pressed" handler="on_hal_jogplus_pressed" swapped="no"/>
+                                <signal name="released" handler="on_hal_jogplus_released" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -130,6 +172,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="use_action_appearance">False</property>
+                                <signal name="pressed" handler="on_hal_jogminus_pressed" swapped="no"/>
+                                <signal name="released" handler="on_hal_jogminus_released" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -567,7 +611,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
+                    <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
@@ -621,7 +665,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
+                    <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
@@ -659,12 +703,11 @@
             <property name="spacing">3</property>
             <child>
               <object class="HAL_ToggleButton" id="FS_button">
-                <property name="label" translatable="yes">FS</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
-                <property name="yalign">0.62000000476837158</property>
+                <property name="image">fittowidth</property>
                 <signal name="toggled" handler="on_FS_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -675,12 +718,12 @@
             </child>
             <child>
               <object class="HAL_ToggleButton" id="hal_togglebutton_estop">
-                <property name="label" translatable="yes">ESTOP</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="related_action">vcp_toggleaction_estop1</property>
                 <property name="use_action_appearance">False</property>
+                <property name="image">stopsign_img</property>
                 <property name="relief">half</property>
                 <property name="use_underline">True</property>
               </object>
@@ -692,13 +735,12 @@
             </child>
             <child>
               <object class="HAL_ToggleButton" id="hal_togglebutton_on">
-                <property name="label" translatable="yes">ON</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="related_action">vcp_toggleaction_power1</property>
                 <property name="use_action_appearance">False</property>
-                <property name="use_underline">True</property>
+                <property name="image">engine_img</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -708,12 +750,12 @@
             </child>
             <child>
               <object class="HAL_Button" id="button_home_all">
-                <property name="label" translatable="yes">HOME</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="related_action">vcp_action_home1</property>
                 <property name="use_action_appearance">False</property>
+                <property name="image">home_img</property>
                 <property name="use_underline">True</property>
               </object>
               <packing>
@@ -724,13 +766,12 @@
             </child>
             <child>
               <object class="HAL_Button" id="hal_button_load">
-                <property name="label" translatable="yes">OPEN</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="related_action">vcp_action_open1</property>
                 <property name="use_action_appearance">False</property>
-                <property name="use_underline">True</property>
+                <property name="image">openfolder_img</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -740,13 +781,12 @@
             </child>
             <child>
               <object class="HAL_Button" id="hal_button_run">
-                <property name="label" translatable="yes">RUN</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="related_action">vcp_action_run1</property>
                 <property name="use_action_appearance">False</property>
-                <property name="use_underline">True</property>
+                <property name="image">play_img</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -756,12 +796,12 @@
             </child>
             <child>
               <object class="HAL_Button" id="hal_button_stop">
-                <property name="label" translatable="yes">STOP</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="related_action">vcp_action_stop1</property>
                 <property name="use_action_appearance">False</property>
+                <property name="image">stop_img</property>
                 <property name="use_underline">True</property>
                 <property name="xalign">0.4699999988079071</property>
               </object>

@@ -77,7 +77,7 @@ license "GPLv2 or greater";
 #include <poll.h>
 #include <endian.h>
 /* Since halcompile compiles in a temp directory we need an absolute path here. Adopt to your own setup */
-#include "/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/STM32/Inc/commpackets.h"
+#include "/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/Inc/commpackets.h"
 
 /* USB device to search for */
 #define USBDEV_VID 0x0483

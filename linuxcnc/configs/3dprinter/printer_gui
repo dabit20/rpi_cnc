@@ -6,17 +6,60 @@ import gladevcp.makepins
 from gladevcp.gladebuilder import GladeBuilder
 import hal
 import sys,os
+import ConfigParser
 
 # set up paths to files
-BASE = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), ".."))
+execpath = os.path.abspath(os.path.dirname(sys.argv[0]))
+BASE = os.path.join(execpath, "..")
 libdir = os.path.join(BASE, "lib", "python")
 sys.path.insert(0, libdir)
 datadir = os.path.join(BASE, "share", "linuxcnc")
 #xmlname = os.path.join(datadir,"printer_gui.glade")
-xmlname="/home/dabit/linuxcnc/configs/3dprinter/printer_gui.glade"
+xmlname=os.path.join(execpath,"printer_gui.glade")
 
 import linuxcnc
 
+print "printergui: using INI file ", os.environ["INI_FILE_NAME"]
+inifile = linuxcnc.ini(os.environ["INI_FILE_NAME"])
+
+# Read/write preferences
+cp = ConfigParser.RawConfigParser
+class preferences(cp):
+    types = {
+        bool: cp.getboolean,
+        float: cp.getfloat,
+        int: cp.getint,
+        str: cp.get,
+        repr: lambda self, section, option: eval(cp.get(self, section, option)),
+    }
+
+    def __init__(self, path = None):
+        cp.__init__(self)
+        if not path:
+            path = "~/.gmoccapy_preferences"
+        self.fn = os.path.expanduser(path)
+        self.read(self.fn)
+
+    def getpref(self, option, default = False, type = bool):
+        m = self.types.get(type)
+        try:
+            o = m(self, "DEFAULT", option)
+        except Exception, detail:
+            print detail
+            self.set("DEFAULT", option, default)
+            self.write(open(self.fn, "w"))
+            if type in(bool, float, int):
+                o = type(default)
+            else:
+                o = default
+        return o
+
+    def putpref(self, option, value, type = str):
+        self.set("DEFAULT", option, type(value))
+        self.write(open(self.fn, "w"))
+
+
+# GUI handler class
 class printer_gui(object):
 
   def __init__(self):
@@ -27,10 +70,15 @@ class printer_gui(object):
     self.builder.add_from_file(xmlname)
     self.halcomp = hal.component("printer_gui")
     self.builder.connect_signals(self)
-    self.window = self.builder.get_object("window1")
-    self.window.show()    
+    self.window = self.builder.get_object("window1")        
     self.panel = gladevcp.makepins.GladePanel(self.halcomp, xmlname, self.builder, None)
     self.halcomp.ready()
+    self.builder.get_object("window1").set_title("Dabit3D printer gui v0.2 ");
+    self.prefs = preferences()
+    self.builder.get_object("extruder_settemp").set_value(self.prefs.getpref("extruder_settemp", 160.0, float))
+    self.builder.get_object("buildplatform_settemp").set_value(self.prefs.getpref("buildplatform_settemp", 40.0, float))
+    self.builder.get_object("buildspace_settemp").set_value(self.prefs.getpref("buildspace_settemp", 30.0, float))
+    self.window.show()
     
     # The gobject.timeout_add() function sets a function to be called at regular intervals
     gobject.timeout_add(100, self.periodic) # time between calls to the function, in milliseconds
@@ -40,24 +88,35 @@ class printer_gui(object):
     self.jogwheel_oldvalue = 0
     self.builder.get_object("axisx_button").set_active(True)
     self.command.mode(self.emc.MODE_MANUAL);
+    
+  # Switch to manual mode if currently not in manual mode
+  def gotomanualmode(self):	
+    if self.status.task_mode != self.emc.MODE_MANUAL:
+    	self.command.mode(self.emc.MODE_MANUAL);
 
   def periodic(self): # fetch status items and update screen
     self.status.poll()
     jogheel_newvalue = self.builder.get_object("jogwheel").get_value()
     if jogheel_newvalue != self.jogwheel_oldvalue:
-    	# Switch to manual mode if currently not in manual mode
-    	if self.status.task_mode != self.emc.MODE_MANUAL:
-    		self.command.mode(self.emc.MODE_MANUAL);
+    	self.gotomanualmode()
     	if self.status.joint[self.selectedaxis]['homed']:
     		self.command.jog(self.emc.JOG_INCREMENT,self.selectedaxis,False,100,(jogheel_newvalue-self.jogwheel_oldvalue)*0.1)
     self.jogwheel_oldvalue = jogheel_newvalue
-    
     return True
+    
+  # for debugging purposes
+  def testhandler(self, widget, data=None):
+  	print "testhandler clicked, widget=",widget
 
+  # Called on window destroy. Save some preferences, and quit.
   def on_window1_destroy(self, widget, data=None):
     print "quit with cancel"
+    self.prefs.putpref("extruder_settemp", self.builder.get_object("extruder_settemp").get_value(), float)
+    self.prefs.putpref("buildplatform_settemp", self.builder.get_object("buildplatform_settemp").get_value(), float)
+    self.prefs.putpref("buildspace_settemp", self.builder.get_object("buildspace_settemp").get_value(), float)
     gtk.main_quit()
-    
+  
+  # X/Y/Z axis button clicked. Activate the button and update the selected axis
   def on_xaxis_button_clicked(self, widget, data=None):
     print "Axis X button clicked, widget=",widget
     if self.builder.get_object("axisx_button").get_active() == True:
@@ -79,6 +138,28 @@ class printer_gui(object):
     	self.builder.get_object("axisy_button").set_active(False)
     	self.selectedaxis = 2
     	
+  # Jog button handlers
+  def on_hal_jogplus_pressed(self, widget, data=None):
+    self.gotomanualmode()
+    if self.status.joint[self.selectedaxis]['homed']:
+        self.command.jog(self.emc.JOG_CONTINUOUS,self.selectedaxis,False,10)
+  
+  def on_hal_jogplus_released(self, widget, data=None):
+    self.gotomanualmode()
+    if self.status.joint[self.selectedaxis]['homed']:
+      self.command.jog(self.emc.JOG_STOP,self.selectedaxis,False)
+
+  def on_hal_jogminus_pressed(self, widget, data=None):
+    self.gotomanualmode()
+    if self.status.joint[self.selectedaxis]['homed']:
+        self.command.jog(self.emc.JOG_CONTINUOUS,self.selectedaxis,False,-10)
+  
+  def on_hal_jogminus_released(self, widget, data=None):
+    self.gotomanualmode()
+    if self.status.joint[self.selectedaxis]['homed']:
+      self.command.jog(self.emc.JOG_STOP,self.selectedaxis,False)
+  	
+  # Fullscreen button. Necessary during development on other than the target HW 	
   def on_FS_button_clicked(self, widget, data=None):
     if self.builder.get_object("FS_button").get_active() == True:
     	print "Going fullscreen"
@@ -86,8 +167,16 @@ class printer_gui(object):
     else:
     	print "Leaving fullscreen"
     	self.window.unfullscreen()
-    		
+    	
+    	    		
 if __name__ == "__main__":
   app = printer_gui()
+  # See if there is a postgui HAL file. If there is, load it
+  postgui_halfile = inifile.find("HAL", "POSTGUI_HALFILE")
+  if postgui_halfile:
+    print "postGUI HAL found: ", postgui_halfile
+    res = os.spawnvp(os.P_WAIT, "halcmd", ["halcmd", "-i", os.environ["INI_FILE_NAME"], "-f", postgui_halfile])
+    if res:
+      raise SystemExit, res
   gtk.main()
 
