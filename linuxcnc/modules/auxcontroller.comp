@@ -7,7 +7,9 @@ param rw float chan_FF0-# [9]=0.0			"Output channel PID 0th order feedforward";
 param rw float chan_minlim-# [9]=0.0			"Output channel PID minimum output";
 param rw float chan_maxlim-# [9]=1.0			"Output channel PID maximum output";
 param rw signed chan_feedbackid-# [9]=-1		"Output channel PID feedback device ID. 0-5 are thermistors, 6-7 are GP analog inputs, negative values translate to 0.0";
+param rw bit chan_reverseaction-# [9] = false		"Output channel PID runs in reversed action mode when true";
 pin in float chan_command-# [9]=0.0  			"Output channel command. This is temperature in degrees C when using a thermistor as the feedback";
+pin in bit chan_isenabled-# [9] = false			"Output channel PID enable flag";
 /* Note: array index for thermistor_xx must match NRTHERMISTORS in commpackets.h */
 param rw float thermistor_refresistor-# [6] = 4700.0	"Thermistor reference resistor in Ohms";
 param rw float thermistor_mintemp-# [6] = 0.0			"Thermistor valid minimum temperature";
@@ -195,6 +197,8 @@ void user_mainloop(void) {
 				transmitpkt2.pc.coeffFF0 = chan_FF0(outchannel_ctr);
 				transmitpkt2.pc.minlim = chan_minlim(outchannel_ctr);
 				transmitpkt2.pc.maxlim = chan_maxlim(outchannel_ctr);
+				transmitpkt2.pc.bEnabled = chan_isenabled(outchannel_ctr);
+				transmitpkt2.pc.bReverseAction = chan_reverseaction(outchannel_ctr);
 				memcpy (xmitbuf+1, &transmitpkt2, sizeof(_transmitpkt2));
 				if (++outchannel_ctr >= NROUTCHANNELS)
 					outchannel_ctr = 0;
