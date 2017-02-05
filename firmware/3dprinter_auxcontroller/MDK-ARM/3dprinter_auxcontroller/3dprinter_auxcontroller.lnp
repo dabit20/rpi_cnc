@@ -31,7 +31,7 @@
 "3dprinter_auxcontroller\usbd_customhid.o"
 "3dprinter_auxcontroller\usbd_ioreq.o"
 "3dprinter_auxcontroller\system_stm32f1xx.o"
---library_type=microlib --strict --scatter "3dprinter_auxcontroller\3dprinter_auxcontroller.sct"
+--strict --scatter "3dprinter_auxcontroller\3dprinter_auxcontroller.sct"
 --diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "3dprinter_auxcontroller.map" -o 3dprinter_auxcontroller\3dprinter_auxcontroller.axf

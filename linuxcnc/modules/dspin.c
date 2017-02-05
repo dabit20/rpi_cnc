@@ -34,7 +34,7 @@ MODULE_SUPPORTED_DEVICE("dSpin");
 /************* Various important defines ****************/
 
 /* Number of joints/motors */
-#define NR_JOINTS 1
+#define NR_JOINTS 3
 
 /* Raspberry BCM IO numbers for the various wires. 
  * Define one number for each joint. Shared pins may use the same number 
@@ -42,8 +42,8 @@ MODULE_SUPPORTED_DEVICE("dSpin");
 static uint8_t dSPIN_RESET[NR_JOINTS] = { 17 };             /* STBY lines of attached dSpin modules. May be shared between multiple modules */
 static uint8_t dSPIN_CS[NR_JOINTS] = { 27 };                    /* CSN lines of attached dSpin modules. May be shared between multiple modules */
 static uint8_t dSPIN_CLK[NR_JOINTS] = { 9 };                    /* CK lines of attached dSpin modules. May be shared between multiple modules */
-static uint8_t dSPIN_MOSI[NR_JOINTS] = { 10 };               /* SDI lines of attached dSpin modules. Separate per module */
-static uint8_t dSPIN_MISO[NR_JOINTS] = { 11 };                /* SDO lines of attached dSpin modules. Separate per module */
+static uint8_t dSPIN_MOSI[NR_JOINTS] = { 10, 23, 5/*, 13 */};       /* SDI lines of attached dSpin modules. Separate per module */
+static uint8_t dSPIN_MISO[NR_JOINTS] = { 11, 24, 6/*, 26 */};       /* SDO lines of attached dSpin modules. Separate per module */
 
 /* Minimum delay in microseconds between bit toggles. May be 0 to disable the timing checks */
 #define MIN_TIMING 1
@@ -51,11 +51,11 @@ static uint8_t dSPIN_MISO[NR_JOINTS] = { 11 };                /* SDO lines of at
 /* BEMF compensation parameters for each motor. See datasheet and ST AN4144 for information on how
  * to obtain these 
  */
-static uint8_t KVAL_HOLD[NR_JOINTS] = { 0x24 };
-static uint8_t KVAL_RUN[NR_JOINTS] = { 0x2F };         
-static uint8_t ST_SLP[NR_JOINTS] = { 0x40 }; 
-static uint8_t  FN_SLP[NR_JOINTS] = { 0x57 }; 
-static uint16_t INT_SPD[NR_JOINTS] = { 0xE4E }; 
+static uint8_t KVAL_HOLD[NR_JOINTS] = { 0x24, 0x24, 0x24 };
+static uint8_t KVAL_RUN[NR_JOINTS] = { 0x2F, 0x2F, 0x2F };         
+static uint8_t ST_SLP[NR_JOINTS] = { 0x40, 0x40, 0x40 }; 
+static uint8_t  FN_SLP[NR_JOINTS] = { 0x57, 0x57, 0x57 }; 
+static uint16_t INT_SPD[NR_JOINTS] = { 0xE4E, 0xE4E, 0xE4E }; 
 
 /************* Code included from minimal_gpio.c, taken from http://abyz.co.uk/rpi/pigpio/ ****************/
 

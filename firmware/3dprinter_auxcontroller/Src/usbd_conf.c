@@ -295,9 +295,12 @@ USBD_StatusTypeDef  USBD_LL_Init (USBD_HandleTypeDef *pdev)
   */
 USBD_StatusTypeDef  USBD_LL_DeInit (USBD_HandleTypeDef *pdev)
 {
+
+  HAL_PCD_DeInit((PCD_HandleTypeDef*)pdev->pData);
+  return USBD_OK;
+#if 0
   HAL_StatusTypeDef hal_status = HAL_OK;
   USBD_StatusTypeDef usb_status = USBD_OK;
- 
   hal_status = HAL_PCD_DeInit(pdev->pData);
      
   switch (hal_status) {
@@ -318,6 +321,7 @@ USBD_StatusTypeDef  USBD_LL_DeInit (USBD_HandleTypeDef *pdev)
     break;
   }
   return usb_status; 
+#endif
 }
 
 /**
@@ -327,6 +331,9 @@ USBD_StatusTypeDef  USBD_LL_DeInit (USBD_HandleTypeDef *pdev)
   */
 USBD_StatusTypeDef  USBD_LL_Start(USBD_HandleTypeDef *pdev)
 {
+  HAL_PCD_Start((PCD_HandleTypeDef*)pdev->pData);
+  return USBD_OK;
+#if 0
   HAL_StatusTypeDef hal_status = HAL_OK;
   USBD_StatusTypeDef usb_status = USBD_OK;
  
@@ -350,6 +357,7 @@ USBD_StatusTypeDef  USBD_LL_Start(USBD_HandleTypeDef *pdev)
     break;
   }
   return usb_status;  
+#endif
 }
 
 /**
@@ -359,6 +367,9 @@ USBD_StatusTypeDef  USBD_LL_Start(USBD_HandleTypeDef *pdev)
   */
 USBD_StatusTypeDef  USBD_LL_Stop (USBD_HandleTypeDef *pdev)
 {
+  HAL_PCD_Stop((PCD_HandleTypeDef*) pdev->pData);
+  return USBD_OK;
+#if 0
   HAL_StatusTypeDef hal_status = HAL_OK;
   USBD_StatusTypeDef usb_status = USBD_OK;
  
@@ -382,6 +393,7 @@ USBD_StatusTypeDef  USBD_LL_Stop (USBD_HandleTypeDef *pdev)
     break;
   }
   return usb_status; 
+#endif
 }
 
 /**
@@ -397,6 +409,13 @@ USBD_StatusTypeDef  USBD_LL_OpenEP  (USBD_HandleTypeDef *pdev,
                                       uint8_t  ep_type,
                                       uint16_t ep_mps)
 {
+  HAL_PCD_EP_Open((PCD_HandleTypeDef*) pdev->pData,
+                  ep_addr,
+                  ep_mps,
+                  ep_type);
+  
+  return USBD_OK; 
+#if 0
   HAL_StatusTypeDef hal_status = HAL_OK;
   USBD_StatusTypeDef usb_status = USBD_OK;
 
@@ -424,6 +443,7 @@ USBD_StatusTypeDef  USBD_LL_OpenEP  (USBD_HandleTypeDef *pdev,
     break;
   }
   return usb_status; 
+#endif
 }
 
 /**
@@ -434,6 +454,9 @@ USBD_StatusTypeDef  USBD_LL_OpenEP  (USBD_HandleTypeDef *pdev,
   */
 USBD_StatusTypeDef  USBD_LL_CloseEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)   
 {
+	HAL_PCD_EP_Close((PCD_HandleTypeDef*) pdev->pData, ep_addr);
+  return USBD_OK;
+#if 0
   HAL_StatusTypeDef hal_status = HAL_OK;
   USBD_StatusTypeDef usb_status = USBD_OK;
   
@@ -457,6 +480,7 @@ USBD_StatusTypeDef  USBD_LL_CloseEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)
     break;
   }
   return usb_status;  
+#endif
 }
 
 /**
@@ -467,6 +491,9 @@ USBD_StatusTypeDef  USBD_LL_CloseEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)
   */
 USBD_StatusTypeDef  USBD_LL_FlushEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)   
 {
+  HAL_PCD_EP_Flush((PCD_HandleTypeDef*) pdev->pData, ep_addr);
+  return USBD_OK;
+#if 0
   HAL_StatusTypeDef hal_status = HAL_OK;
   USBD_StatusTypeDef usb_status = USBD_OK;
   
@@ -490,6 +517,7 @@ USBD_StatusTypeDef  USBD_LL_FlushEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)
     break;
   }
   return usb_status;  
+#endif
 }
 
 /**
@@ -500,6 +528,9 @@ USBD_StatusTypeDef  USBD_LL_FlushEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)
   */
 USBD_StatusTypeDef  USBD_LL_StallEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)   
 {
+  HAL_PCD_EP_SetStall((PCD_HandleTypeDef*) pdev->pData, ep_addr);
+  return USBD_OK;
+#if 0
   HAL_StatusTypeDef hal_status = HAL_OK;
   USBD_StatusTypeDef usb_status = USBD_OK;
   
@@ -523,6 +554,7 @@ USBD_StatusTypeDef  USBD_LL_StallEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)
     break;
   }
   return usb_status;  
+#endif
 }
 
 /**
@@ -533,6 +565,9 @@ USBD_StatusTypeDef  USBD_LL_StallEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)
   */
 USBD_StatusTypeDef  USBD_LL_ClearStallEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)   
 {
+  HAL_PCD_EP_ClrStall((PCD_HandleTypeDef*) pdev->pData, ep_addr);
+  return USBD_OK;
+#if 0
   HAL_StatusTypeDef hal_status = HAL_OK;
   USBD_StatusTypeDef usb_status = USBD_OK;
   
@@ -556,6 +591,7 @@ USBD_StatusTypeDef  USBD_LL_ClearStallEP (USBD_HandleTypeDef *pdev, uint8_t ep_a
     break;
   }
   return usb_status; 
+#endif
 }
 
 /**
@@ -585,6 +621,9 @@ uint8_t USBD_LL_IsStallEP (USBD_HandleTypeDef *pdev, uint8_t ep_addr)
   */
 USBD_StatusTypeDef  USBD_LL_SetUSBAddress (USBD_HandleTypeDef *pdev, uint8_t dev_addr)   
 {
+  HAL_PCD_SetAddress((PCD_HandleTypeDef*) pdev->pData, dev_addr);
+  return USBD_OK; 
+#if 0
   HAL_StatusTypeDef hal_status = HAL_OK;
   USBD_StatusTypeDef usb_status = USBD_OK;
   
@@ -608,6 +647,7 @@ USBD_StatusTypeDef  USBD_LL_SetUSBAddress (USBD_HandleTypeDef *pdev, uint8_t dev
     break;
   }
   return usb_status;  
+#endif
 }
 
 /**
@@ -623,6 +663,9 @@ USBD_StatusTypeDef  USBD_LL_Transmit (USBD_HandleTypeDef *pdev,
                                       uint8_t  *pbuf,
                                       uint16_t  size)
 {
+  HAL_PCD_EP_Transmit((PCD_HandleTypeDef*) pdev->pData, ep_addr, pbuf, size);
+  return USBD_OK;
+#if 0
   HAL_StatusTypeDef hal_status = HAL_OK;
   USBD_StatusTypeDef usb_status = USBD_OK;
 
@@ -646,6 +689,7 @@ USBD_StatusTypeDef  USBD_LL_Transmit (USBD_HandleTypeDef *pdev,
     break;
   }
   return usb_status;    
+#endif
 }
 
 /**
@@ -661,6 +705,9 @@ USBD_StatusTypeDef  USBD_LL_PrepareReceive(USBD_HandleTypeDef *pdev,
                                            uint8_t  *pbuf,
                                            uint16_t  size)
 {
+  HAL_PCD_EP_Receive((PCD_HandleTypeDef*) pdev->pData, ep_addr, pbuf, size);
+  return USBD_OK;
+#if 0
   HAL_StatusTypeDef hal_status = HAL_OK;
   USBD_StatusTypeDef usb_status = USBD_OK;
 
@@ -684,6 +731,7 @@ USBD_StatusTypeDef  USBD_LL_PrepareReceive(USBD_HandleTypeDef *pdev,
     break;
   }
   return usb_status; 
+#endif
 }
 
 /**
