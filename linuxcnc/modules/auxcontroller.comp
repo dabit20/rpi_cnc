@@ -77,7 +77,7 @@ license "GPLv2 or greater";
 #include <poll.h>
 #include <endian.h>
 /* Since halcompile compiles in a temp directory we need an absolute path here. Adopt to your own setup */
-#include "/home/dabit/3dprinter/rpi_cnc/firmware/3dprinter_auxcontroller/Inc/commpackets.h"
+#include "/home/dabit/rpi_cnc/firmware/3dprinter_auxcontroller/Inc/commpackets.h"
 
 /* USB device to search for */
 #define USBDEV_VID 0x0483
@@ -164,7 +164,7 @@ void userinit(int argc, char **argv)
 }
 
 void user_mainloop(void) {
-	static int outchannel_ctr=0, thermistor_ctr=0, ret;
+	static int outchannel_ctr=0, thermistor_ctr=0, pktctr=0, ret;
 	static uint8_t idx=0, *data, selector=0, thermistorid;
 	sleep (1);
 	while(1) {
@@ -203,7 +203,9 @@ void user_mainloop(void) {
 			if (usbfd>0) {
 				ret=write(usbfd, xmitbuf, 65);
 				if (ret != 65) {
-					fprintf(stderr,"USB transmit fail: %d bytes transmitted\n", ret);
+					fprintf(stderr,"USB transmit fail: %d bytes transmitted. Number of succesful packets received %d\n", ret, pktctr);
+				} else {
+				     	pktctr++;
 				}
 			}
 			/* See if there is data available */
