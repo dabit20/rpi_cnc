@@ -2,15 +2,72 @@
 
 loadrt [KINS]KINEMATICS
 loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS 
+loadrt dspin
+loadrt sum2 names=joint0-sum,joint1-sum
+loadrt pid names=j0pos-pid,j1pos-pid,zpos-pid,apos-pid
 
-addf motion-command-handler servo-thread
-addf motion-controller servo-thread
+addf motion-command-handler 	servo-thread
+addf motion-controller 			servo-thread
+addf joint0-sum				servo-thread
+addf joint1-sum				servo-thread
+addf j0pos-pid.do-pid-calcs		servo-thread
+addf j1pos-pid.do-pid-calcs		servo-thread
+addf zpos-pid.do-pid-calcs		servo-thread
+addf apos-pid.do-pid-calcs		servo-thread
+addf dspin					servo-thread
 
 # until we have all hardware up and running, link the joint command values back to feedback
 net xpos-cmd joint.0.motor-pos-cmd => joint.0.motor-pos-fb
 net ypos-cmd joint.1.motor-pos-cmd => joint.1.motor-pos-fb
 net zpos-cmd joint.2.motor-pos-cmd => joint.2.motor-pos-fb
 net apos-cmd joint.3.motor-pos-cmd => joint.3.motor-pos-fb
+
+# Convert cartesian axis commands to CoreXY joint commands: joint0 = x+y, joint1=x-y
+# We do this separately in HAL since our homing prodedure uses cartesian axes so using adapted kinematics won't work
+net xpos-cmd => joint0-sum.in0 => joint1-sum.in0
+net ypos-cmd => joint0-sum.in1 => joint1-sum.in1
+setp joint1-sum.gain1 -1.0
+net joint0-cmd <= joint0-sum.out
+net joint1-cmd <= joint1-sum.out
+
+# dSpin enable
+net joints-enable joint.0.amp-enable-out dspin.enable
+
+# CoreXY joint 0, PID controller and hookup to dSpin driver
+net joint0-cmd => j0pos-pid.command
+net joint0-fb  dspin.position-fb-joint0 j0pos-pid.feedback
+net joint0-velcmd j0pos-pid.output dspin.velocity-cmd-joint0
+net joints-enable j0pos-pid.enable
+setp j0pos-pid.maxoutput [JOINT_0]MAX_VELOCITY
+setp j0pos-pid.Pgain [JOINT_0]PID_PGAIN
+setp j0pos-pid.Igain [JOINT_0]PID_IGAIN
+setp j0pos-pid.FF1 1.0
+setp j0pos-pid.error-previous-target true
+setp dspin.scale-joint0 [JOINT_0]OUTPUT_SCALE
+
+# CoreXY joint 1, PID controller and hookup to dSpin driver
+net joint1-cmd => j1pos-pid.command
+net joint1-fb  dspin.position-fb-joint1 j1pos-pid.feedback
+net joint1-velcmd j1pos-pid.output dspin.velocity-cmd-joint1
+net joints-enable j1pos-pid.enable
+setp j1pos-pid.maxoutput [JOINT_1]MAX_VELOCITY
+setp j1pos-pid.Pgain [JOINT_1]PID_PGAIN
+setp j1pos-pid.Igain [JOINT_1]PID_IGAIN
+setp j1pos-pid.FF1 1.0
+setp j1pos-pid.error-previous-target true
+setp dspin.scale-joint1 [JOINT_0]OUTPUT_SCALE
+
+# Z-position, PID controller and hookup to dSpin driver
+net zpos-cmd => zpos-pid.command
+net zpos-fb  dspin.position-fb-joint2 zpos-pid.feedback
+net zpos-velcmd zpos-pid.output dspin.velocity-cmd-joint2
+net joints-enable zpos-pid.enable
+setp zpos-pid.maxoutput [JOINT_2]MAX_VELOCITY
+setp zpos-pid.Pgain [JOINT_2]PID_PGAIN
+setp zpos-pid.Igain [JOINT_2]PID_IGAIN
+setp zpos-pid.FF1 1.0
+setp zpos-pid.error-previous-target true
+setp dspin.scale-joint2 [JOINT_2]OUTPUT_SCALE
 
 # Estop chain
 net estop-out <= iocontrol.0.user-enable-out
