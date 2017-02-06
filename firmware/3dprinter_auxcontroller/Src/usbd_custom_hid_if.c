@@ -203,6 +203,8 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 				PID[((sPkt_PIDControl *)data)->outID].command = ((sPkt_PIDControl *)data)->command;
 				PID[((sPkt_PIDControl *)data)->outID].minlim = ((sPkt_PIDControl *)data)->minlim;
 				PID[((sPkt_PIDControl *)data)->outID].maxlim = ((sPkt_PIDControl *)data)->maxlim;
+				PID[((sPkt_PIDControl *)data)->outID].bEnabled = ((sPkt_PIDControl *)data)->bEnabled;
+				PID[((sPkt_PIDControl *)data)->outID].bReverseAction = ((sPkt_PIDControl *)data)->bReverseAction;				
 				if (fabs(PID[((sPkt_PIDControl *)data)->outID].minlim) > 1.0f) PID[((sPkt_PIDControl *)data)->outID].minlim = 0.0f;
 				if (fabs(PID[((sPkt_PIDControl *)data)->outID].maxlim) > 1.0f) PID[((sPkt_PIDControl *)data)->outID].maxlim = 1.0f;
 				if (PID[((sPkt_PIDControl *)data)->outID].minlim > PID[((sPkt_PIDControl *)data)->outID].maxlim)

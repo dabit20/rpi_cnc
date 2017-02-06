@@ -10,7 +10,7 @@
 
 #define TICKS_PER_SEC 30000							/* Timer ISR rate, equal to DC_FAST modulator speed. Must be higher than 1100Hz */
 #define LOWSPEED_DIV ((uint16_t)(TICKS_PER_SEC/105.0))	/* divisor used for the lowspeed PWM at 105Hz */
-#define COMM_TIMEOUT (10 * TICKS_PER_SEC)				/* we want a packet at least every 10 seconds */
+#define COMM_TIMEOUT (2 * TICKS_PER_SEC)				/* we want a packet at least every second */
 
 #define NR_ADC_CHANNELS 8								/* Number of enabled ADC channels */
 #define NR_AVG_POINTS 8									/* Number of samples to average */
@@ -45,12 +45,14 @@ typedef struct {
 	// 'public' variables
 	float Kp, Ki, Kd, FF0;	// P, I, D and 0th order feedforward
 	float minlim, maxlim;	// Output minimum and maximum limits. Range is usually 0.0f - 1.0f
-	int8_t inID;			// Input ID, when used. Set to -1 when directly entering the feedback value
 	float command, feedback;// PID command and feedback values
 	float output;			// PID output. 1.0 gives the maximum modulator output
 	// 'private' variables
 	float integrator;		// integrator
 	float preverror;		// previous error, used for Kd term
+	int8_t inID;			// Input ID, when used. Set to -1 when directly entering the feedback value
+	uint8_t bEnabled;		// Enabled when this is not zero
+	uint8_t bReverseAction;	// When not zero, use reverse action so output starts at maxlim and goes down with higher control effort
 } OutPID;
 
 /* Thermistor data structure */

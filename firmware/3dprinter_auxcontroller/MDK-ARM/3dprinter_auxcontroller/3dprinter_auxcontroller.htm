@@ -3,7 +3,7 @@
 <title>Static Call Graph - [3dprinter_auxcontroller\3dprinter_auxcontroller.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image 3dprinter_auxcontroller\3dprinter_auxcontroller.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Sat Feb 04 22:56:10 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Tue Feb 07 00:25:23 2017
 <BR><P>
 <H3>Maximum Stack Usage =        248 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1178,7 +1178,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xb.o(RESET)
 </UL>
-<P><STRONG><a name="[ec]"></a>SysTick_callback</STRONG> (Thumb, 388 bytes, Stack size 48 bytes, main.o(i.SysTick_callback), UNUSED)
+<P><STRONG><a name="[ec]"></a>SysTick_callback</STRONG> (Thumb, 416 bytes, Stack size 40 bytes, main.o(i.SysTick_callback), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Start_DMA
 <LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbnf
 <LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfrcmple
@@ -1732,7 +1732,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[59]"></a>main</STRONG> (Thumb, 818 bytes, Stack size 96 bytes, main.o(i.main))
+<P><STRONG><a name="[59]"></a>main</STRONG> (Thumb, 828 bytes, Stack size 96 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = main &rArr; log &rArr; __kernel_poly &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
@@ -2166,7 +2166,7 @@ Local Symbols
 <P><STRONG><a name="[3d]"></a>CUSTOM_HID_Init_FS</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, usbd_custom_hid_if.o(i.CUSTOM_HID_Init_FS))
 <BR>[Address Reference Count : 1]<UL><LI> usbd_custom_hid_if.o(.data)
 </UL>
-<P><STRONG><a name="[3f]"></a>CUSTOM_HID_OutEvent_FS</STRONG> (Thumb, 452 bytes, Stack size 40 bytes, usbd_custom_hid_if.o(i.CUSTOM_HID_OutEvent_FS))
+<P><STRONG><a name="[3f]"></a>CUSTOM_HID_OutEvent_FS</STRONG> (Thumb, 494 bytes, Stack size 40 bytes, usbd_custom_hid_if.o(i.CUSTOM_HID_OutEvent_FS))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = CUSTOM_HID_OutEvent_FS
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfrcmple

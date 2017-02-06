@@ -40,7 +40,7 @@
 /* Communicate a PID control value. This is also used for fan PWM; then the PID coeffs are 0.0f and only FF0 is used */
 #define PKT_PIDCONTROL 10
 typedef struct {
-	uint8_t len;			// packet length in bytes, including this one. Size=32
+	uint8_t len;			// packet length in bytes, including this one. Size=34
 	uint8_t id;				// id=PKT_PIDCONTROL
 	uint8_t outID;			// Output channel ID
 	int8_t inID;			// Input channel ID used for feedback. Feedback is set to 0.0 when this is negative
@@ -50,6 +50,8 @@ typedef struct {
 	float coeffD;			// PID D coefficient
 	float coeffFF0;			// PID FF0 coefficient
 	float minlim, maxlim;	// Minimum and maximum output limit values, Usually 0.0 - 1.0 for fullscale
+	uint8_t bEnabled;	// PID controller is enabled when this is not zero
+	uint8_t bReverseAction;	// When not zero, use reverse action so output starts at maxlim and goes down with higher control effort
 } sPkt_PIDControl;
 
 /* Communicate a thermistor setup */

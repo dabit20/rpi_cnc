@@ -645,7 +645,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x57B6EF83)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h)(0x57B6EF83)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x57B6EF83)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x57B6EF83)
-F (../Src/usbd_custom_hid_if.c)(0x588D1541)(-c --cpu Cortex-M3 -D__EVAL -g -O2 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include --C99 --fpu=softvfp-IC:\3dprinter\rpi_cnc\firmware\3dprinter_auxcontroller\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta4\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-D__UVISION_VERSION="521" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o 3dprinter_auxcontroller\usbd_custom_hid_if.o --omf_browse 3dprinter_auxcontroller\usbd_custom_hid_if.crf --depend 3dprinter_auxcontroller\usbd_custom_hid_if.d)
+F (../Src/usbd_custom_hid_if.c)(0x589905C0)(-c --cpu Cortex-M3 -D__EVAL -g -O2 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include --C99 --fpu=softvfp-IC:\3dprinter\rpi_cnc\firmware\3dprinter_auxcontroller\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta4\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-D__UVISION_VERSION="521" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o 3dprinter_auxcontroller\usbd_custom_hid_if.o --omf_browse 3dprinter_auxcontroller\usbd_custom_hid_if.crf --depend 3dprinter_auxcontroller\usbd_custom_hid_if.d)
 I (../Inc/usbd_custom_hid_if.h)(0x588D1041)
 I (../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc/usbd_customhid.h)(0x588D14A6)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h)(0x57B6EF87)
@@ -688,10 +688,10 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h)(0x57B6EF83)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h)(0x57B6EF83)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h)(0x57B6EF87)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h)(0x57B6EF87)
-I (../Inc/commpackets.h)(0x588D0D0D)
-I (../Inc/housekeeping.h)(0x588D0D0D)
+I (../Inc/commpackets.h)(0x58990574)
+I (../Inc/housekeeping.h)(0x58990495)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x574E9286)
-F (../Src/main.c)(0x5890D642)(-c --cpu Cortex-M3 -D__EVAL -g -O2 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include --C99 --fpu=softvfp-IC:\3dprinter\rpi_cnc\firmware\3dprinter_auxcontroller\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta4\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-D__UVISION_VERSION="521" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o 3dprinter_auxcontroller\main.o --omf_browse 3dprinter_auxcontroller\main.crf --depend 3dprinter_auxcontroller\main.d)
+F (../Src/main.c)(0x589904F5)(-c --cpu Cortex-M3 -D__EVAL -g -O2 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include --C99 --fpu=softvfp-IC:\3dprinter\rpi_cnc\firmware\3dprinter_auxcontroller\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta4\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-D__UVISION_VERSION="521" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o 3dprinter_auxcontroller\main.o --omf_browse 3dprinter_auxcontroller\main.crf --depend 3dprinter_auxcontroller\main.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x57B6EF83)
 I (../Inc/stm32f1xx_hal_conf.h)(0x588D1041)
 I (../Inc/main.h)(0x588D1041)
@@ -735,8 +735,8 @@ I (../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc/usbd_customhid
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h)(0x57B6EF87)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h)(0x57B6EF87)
 I (../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h)(0x57B6EF87)
-I (../Inc/commpackets.h)(0x588D0D0D)
-I (../Inc/housekeeping.h)(0x588D0D0D)
+I (../Inc/commpackets.h)(0x58990574)
+I (../Inc/housekeeping.h)(0x58990495)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x574E9286)
 F (../Src/stm32f1xx_it.c)(0x589647B0)(-c --cpu Cortex-M3 -D__EVAL -g -O2 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include --C99 --fpu=softvfp-IC:\3dprinter\rpi_cnc\firmware\3dprinter_auxcontroller\MDK-ARM\RTE-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0-Beta4\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-D__UVISION_VERSION="521" -D_RTE_ -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB-o 3dprinter_auxcontroller\stm32f1xx_it.o --omf_browse 3dprinter_auxcontroller\stm32f1xx_it.crf --depend 3dprinter_auxcontroller\stm32f1xx_it.d)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x57B6EF83)

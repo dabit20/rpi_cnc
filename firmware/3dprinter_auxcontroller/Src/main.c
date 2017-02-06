@@ -156,6 +156,9 @@ void SysTick_callback(void)
 		PID[pidctr].feedback = 0.0f;
 		bEvalPID = true;
 	}
+	// Is it enabled?
+	if (!PID[pidctr].bEnabled)
+		bEvalPID = false;
 	// Evaluate one of the PID controllers
 	if (bEvalPID) {
 		err = PID[pidctr].command - PID[pidctr].feedback;
@@ -173,6 +176,9 @@ void SysTick_callback(void)
 			PID[pidctr].integrator += PID[pidctr].Ki*err*PIDSAMPLETIME;
 		}
 	}
+	// Reverse action?
+	if (PID[pidctr].bReverseAction)
+		output = PID[pidctr].maxlim - output;
 	// Update modulator
 	PID[pidctr].output = output;
 	incr = (uint32_t)(output * 8388608.0f);
@@ -196,7 +202,7 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)
 {
 	static uint16_t lowspeedctr = LOWSPEED_DIV;
 	int i;
-	if (IsInitialised)
+	if (!IsInitialised)
 		return;
 	/* Handle running state and comm timeout */
 	if (!IsRunning) {
@@ -326,6 +332,8 @@ int main(void)
 		PID[i].integrator = 0.0f;
 		PID[i].output = 0.0f;
 		PID[i].preverror = 0.0f;
+		PID[i].bEnabled = false;
+		PID[i].bReverseAction = false;
 	}
 	// Initialise thermistor data structures
 	for (i=0;i<NRTHERMISTORS;i++) {
