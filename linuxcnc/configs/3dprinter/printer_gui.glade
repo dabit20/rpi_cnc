@@ -80,7 +80,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
-                              <object class="HAL_ToggleButton" id="axisx_button">
+                              <object class="GtkToggleButton" id="axisx_button">
                                 <property name="label" translatable="yes">X</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -95,7 +95,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="HAL_ToggleButton" id="axisy_button">
+                              <object class="GtkToggleButton" id="axisy_button">
                                 <property name="label" translatable="yes">Y</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -110,7 +110,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="HAL_ToggleButton" id="axisz_button">
+                              <object class="GtkToggleButton" id="axisz_button">
                                 <property name="label" translatable="yes">Z</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -136,7 +136,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
-                              <object class="HAL_Button" id="hal_jogplus">
+                              <object class="GtkButton" id="hal_jogplus">
                                 <property name="label" translatable="yes">+</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -146,7 +146,7 @@
                                 <signal name="released" handler="on_hal_jogplus_released" swapped="no"/>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
+                                <property name="expand">True</property>
                                 <property name="fill">True</property>
                                 <property name="position">0</property>
                               </packing>
@@ -166,17 +166,17 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="HAL_Button" id="hal_jogmin">
+                              <object class="GtkButton" id="hal_jogmin">
                                 <property name="label" translatable="yes">-</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="use_action_appearance">False</property>
-                                <signal name="pressed" handler="on_hal_jogminus_pressed" swapped="no"/>
-                                <signal name="released" handler="on_hal_jogminus_released" swapped="no"/>
+                                <signal name="pressed" handler="on_hal_jogmin_pressed" swapped="no"/>
+                                <signal name="released" handler="on_hal_jogmin_released" swapped="no"/>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
+                                <property name="expand">True</property>
                                 <property name="fill">True</property>
                                 <property name="position">2</property>
                               </packing>
@@ -210,6 +210,7 @@
                               <packing>
                                 <property name="expand">True</property>
                                 <property name="fill">True</property>
+                                <property name="pack_type">end</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
@@ -232,6 +233,7 @@
                               <packing>
                                 <property name="expand">True</property>
                                 <property name="fill">True</property>
+                                <property name="pack_type">end</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -254,6 +256,7 @@
                               <packing>
                                 <property name="expand">True</property>
                                 <property name="fill">True</property>
+                                <property name="pack_type">end</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -347,7 +350,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="HAL_ToggleButton" id="hal_togglebutton4">
+                              <object class="HAL_ToggleButton" id="extruder_onoff">
                                 <property name="label" translatable="yes">On</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -398,7 +401,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="HAL_ToggleButton" id="hal_togglebutton5">
+                              <object class="HAL_ToggleButton" id="buildplatform_onoff">
                                 <property name="label" translatable="yes">On</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -477,7 +480,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="HAL_ToggleButton" id="hal_togglebutton6">
+                              <object class="HAL_ToggleButton" id="buildspace_onoff">
                                 <property name="label" translatable="yes">On</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -650,7 +653,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="HAL_ToggleButton" id="hal_togglebutton3">
+                      <object class="HAL_ToggleButton" id="extruderfan_onoff">
                         <property name="label" translatable="yes">On</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
