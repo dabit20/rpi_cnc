@@ -193,7 +193,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
-                              <object class="Combi_DRO" id="combi_dro_X">
+                              <object class="Combi_DRO" id="combi_dro_Z">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="abs_color">#00000000ffff</property>
@@ -202,6 +202,7 @@
                                 <property name="font_size">16</property>
                                 <property name="homed_color">#0000ffff0000</property>
                                 <property name="imperial_text_template">%9.1f</property>
+                                <property name="joint_number">2</property>
                                 <property name="mm_text_template">%10.1f</property>
                                 <property name="rel_color">#000000000000</property>
                                 <property name="toggle_readout">False</property>
@@ -238,7 +239,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="Combi_DRO" id="combi_dro_Z">
+                              <object class="Combi_DRO" id="combi_dro_X">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="abs_color">#00000000ffff</property>
@@ -247,7 +248,6 @@
                                 <property name="font_size">16</property>
                                 <property name="homed_color">#0000ffff0000</property>
                                 <property name="imperial_text_template">%9.1f</property>
-                                <property name="joint_number">2</property>
                                 <property name="mm_text_template">%10.1f</property>
                                 <property name="rel_color">#000000000000</property>
                                 <property name="toggle_readout">False</property>
