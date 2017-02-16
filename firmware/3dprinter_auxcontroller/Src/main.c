@@ -344,6 +344,7 @@ int main(void)
 		thermistor[i].SteinhartHart[2] = 0.0f;						//ln(R)^2, seldom used
 		thermistor[i].SteinhartHart[3] = 9.2641025635702e-08f;		//ln(R)^3
 		thermistor[i].Temperature = 0.0f;
+		thermistor[i].Resistance = 0.0f;
 		thermistor[i].ValidTempMax = 60.0f;			// Room temperature range.
 		thermistor[i].ValidTempMin = 5.0f;			// The end application should set more sensible values
 		thermistor[i].bIsValid = false;
@@ -405,8 +406,8 @@ int main(void)
 			  adcavg *= (1.0f/(float)NR_AVG_POINTS);
 			  if (adcavg > 3.0f && adcavg < 4092.0f) {
 				  //ntcres = thermistor[i].RefResistorValue * ((float)(4095-ADCresults[i]) / (float)(ADCresults[i]+1));
-				  ntcres = thermistor[i].RefResistorValue * ((4095.0f / adcavg)-1.0f);
-				  logntcres = log(ntcres);
+				  thermistor[i].Resistance = thermistor[i].RefResistorValue * ((4095.0f / adcavg)-1.0f);
+				  logntcres = log(thermistor[i].Resistance);
 				  invT = thermistor[i].SteinhartHart[0] + logntcres*thermistor[i].SteinhartHart[1] + logntcres*logntcres*thermistor[i].SteinhartHart[2] + logntcres*logntcres*logntcres*thermistor[i].SteinhartHart[3];
 				  invT = 1.0f/invT;
 				  invT -= 273.15f;
@@ -432,6 +433,7 @@ int main(void)
 		  for (i=0;i<NRTHERMISTORS;i++) {
 			  d2h_pkt1.tv[i].bIsValid = thermistor[i].bIsValid;
 			  d2h_pkt1.tv[i].TempCelcius = thermistor[i].Temperature;
+				d2h_pkt1.tv[i].Resistance = thermistor[i].Resistance;
 		  }
 		  memcpy (USBTxBuf, &d2h_pkt1, sizeof (_d2h_pkt1));
 		  USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, USBTxBuf, 64);

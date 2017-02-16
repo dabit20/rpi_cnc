@@ -9,7 +9,7 @@
 #define COMMPACKETS_H_
 
 // Sensible names for input channel IDs
-#define NRTHERMISTORS 6				// Number of thermistor inputs. These start at ADC_AIN0
+#define NRTHERMISTORS 5				// Number of thermistor inputs. These start at ADC_AIN0. We actually have 6 ADC channels reserved, but we do not need all of them and 5 fits nice in an USB packet
 #define NRANALOG 2					// Number of generic analog inputs used
 #define INID_THERMISTOR1	0
 #define INID_THERMISTOR2	1
@@ -69,11 +69,12 @@ typedef struct {
 /* Communicate a thermistor value (usually to host) */
 #define PKT_THERMISTOR_VALUE 30
 typedef struct {
-	uint8_t len;			// packet length in bytes, including this one.
+	uint8_t len;			// packet length in bytes, including this one. Size=12
 	uint8_t id;				// id=PKT_THERMISTOR_VALUE
 	uint8_t ThermistorID;	// Number of the thermistor
 	uint8_t bIsValid;		// != 0 when the temperature is valid.
 	float TempCelcius;		// Temperature in degrees C
+	float Resistance;			// Measured resistance of the thermistor in Ohms
 } sPkt_ThermistorValue;
 
 

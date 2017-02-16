@@ -9,7 +9,7 @@
 #define HOUSEKEEPING_H_
 
 #define TICKS_PER_SEC 30000							/* Timer ISR rate, equal to DC_FAST modulator speed. Must be higher than 1100Hz */
-#define LOWSPEED_DIV ((uint16_t)(TICKS_PER_SEC/105.0))	/* divisor used for the lowspeed PWM at 105Hz */
+#define LOWSPEED_DIV ((uint16_t)(TICKS_PER_SEC/25.0))	/* divisor used for the lowspeed PDM at 25Hz */
 #define COMM_TIMEOUT (2 * TICKS_PER_SEC)				/* we want a packet at least every second */
 
 #define NR_ADC_CHANNELS 8								/* Number of enabled ADC channels */
@@ -28,7 +28,7 @@ typedef uint8_t bool;
 /* Modulator speeds. DC can be pulsed much faster than zero-crossing AC. Intermediate values may be added later */
 typedef enum  {
 	DC_FAST,				// Use a base frequency of 30kHz for the PDM modulator
-	AC_SLOW					// Use a base frequency of 105Hz for the PDM modulator
+	AC_SLOW					// Use a base frequency of 25Hz for the PDM modulator
 } Modulator_Speed;
 
 /* Output modulator data */
@@ -63,6 +63,7 @@ typedef struct {
 	float ValidTempMin;		// Minimum valid temperature in degrees C. Used to check calculation results
 	float ValidTempMax;		// Maximum valid temperature in degrees C. Used to check calculation results
 	// Output values
+	float Resistance;			// Measured resistance. Handy as a debugging/calibration tool
 	float Temperature;		// Calculated
 	bool bIsValid;
 } Thermistor;
