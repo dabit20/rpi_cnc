@@ -6,23 +6,24 @@ param rw float chan_Kd-# [9]=0.0			"Output channel PID Kd";
 param rw float chan_FF0-# [9]=0.0			"Output channel PID 0th order feedforward";
 param rw float chan_minlim-# [9]=0.0			"Output channel PID minimum output";
 param rw float chan_maxlim-# [9]=1.0			"Output channel PID maximum output";
-param rw signed chan_feedbackid-# [9]=-1		"Output channel PID feedback device ID. 0-5 are thermistors, 6-7 are GP analog inputs, negative values translate to 0.0";
+param rw signed chan_feedbackid-# [9]=-1		"Output channel PID feedback device ID. 0-4 are thermistors, 5-6 are GP analog inputs, negative values translate to 0.0";
 param rw bit chan_reverseaction-# [9] = false		"Output channel PID runs in reversed action mode when true";
 pin in float chan_command-# [9]=0.0  			"Output channel command. This is temperature in degrees C when using a thermistor as the feedback";
 pin in bit chan_isenabled-# [9] = false			"Output channel PID enable flag";
 /* Note: array index for thermistor_xx must match NRTHERMISTORS in commpackets.h */
-param rw float thermistor_refresistor-# [6] = 4700.0	"Thermistor reference resistor in Ohms";
-param rw float thermistor_mintemp-# [6] = 0.0			"Thermistor valid minimum temperature";
-param rw float thermistor_maxtemp-# [6] = 80.0		"Thermistor valid maximum temperature";
-param rw float thermistor_shhA-# [6] = 0.000722378300319346	"Thermistor Steinhart-Hart coefficient A (ln^0)";
-param rw float thermistor_shhB-# [6] = 0.000216301852054578	"Thermistor Steinhart-Hart coefficient B (ln^1)";
-param rw float thermistor_shhC-# [6] = 0.0					"Thermistor Steinhart-Hart coefficient C (ln^2)";
-param rw float thermistor_shhD-# [6] = 9.2641025635702e-08	"Thermistor Steinhart-Hart coefficient D (ln^3)";
+param rw float thermistor_refresistor-# [5] = 4700.0	"Thermistor reference resistor in Ohms";
+param rw float thermistor_mintemp-# [5] = 0.0			"Thermistor valid minimum temperature";
+param rw float thermistor_maxtemp-# [5] = 80.0		"Thermistor valid maximum temperature";
+param rw float thermistor_shhA-# [5] = 0.000722378300319346	"Thermistor Steinhart-Hart coefficient A (ln^0)";
+param rw float thermistor_shhB-# [5] = 0.000216301852054578	"Thermistor Steinhart-Hart coefficient B (ln^1)";
+param rw float thermistor_shhC-# [5] = 0.0					"Thermistor Steinhart-Hart coefficient C (ln^2)";
+param rw float thermistor_shhD-# [5] = 9.2641025635702e-08	"Thermistor Steinhart-Hart coefficient D (ln^3)";
 
 param rw unsigned debug_receptionctr = 0		"Packets received counter for debugging";
 
-pin out float thermistor_temperature-# [6]		"Measured thermistor temperature";
-pin out bit thermistor-isvalid-# [6]			"Temperature measurement valid";
+pin out float thermistor_temperature-# [5]		"Measured thermistor temperature";
+pin out float thermistor_resistance-# [5]		"Measured thermistor resistance. Depends on an accurate setting of the reference resistor";
+pin out bit thermistor-isvalid-# [5]			"Temperature measurement valid";
 
 option userspace;
 option userinit yes;
@@ -225,6 +226,7 @@ void user_mainloop(void) {
 							if (thermistorid < NRTHERMISTORS) {
 								thermistor_isvalid(thermistorid) = ((sPkt_ThermistorValue *)data)->bIsValid;
 								thermistor_temperature(thermistorid) = ((sPkt_ThermistorValue *)data)->TempCelcius;
+								thermistor_resistance(thermistorid) = ((sPkt_ThermistorValue *)data)->Resistance;
 								debug_receptionctr = (debug_receptionctr + 1);
 							}
 						break;
