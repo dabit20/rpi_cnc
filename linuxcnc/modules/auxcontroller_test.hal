@@ -11,10 +11,20 @@ loadrt siggen
 setp auxcontroller.0.chan-feedbackid-3 0
 setp auxcontroller.0.thermistor-maxtemp-0 230
 
-# servo to 35 degrees C
+# servo channel 3 (first 24V channel) to 35 degrees C
 setp auxcontroller.0.chan-Kp-3 0.05
 setp auxcontroller.0.chan-Ki-3 0.002
 setp auxcontroller.0.chan-command-3 35.0
+setp auxcontroller.0.chan-isenabled-3 true
+
+# Fixed 50% on channel 6 (first 230VAC channel)
+setp auxcontroller.0.chan-Kp-6 1.0
+setp auxcontroller.0.chan-feedbackid-6 -1
+setp auxcontroller.0.chan-command-6 0.5
+setp auxcontroller.0.chan-isenabled-6 true
+
+
+
 start
 
 #loadusr halscope
