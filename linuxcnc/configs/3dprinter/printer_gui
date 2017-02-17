@@ -140,6 +140,7 @@ class printer_gui(object):
     	
   # Jog button handlers
   def on_hal_jogplus_pressed(self, widget, data=None):
+    print "selectedaxis ", self.selectedaxis
     self.gotomanualmode()
     if self.status.joint[self.selectedaxis]['homed']:
         self.command.jog(self.emc.JOG_CONTINUOUS,self.selectedaxis,False,10)
