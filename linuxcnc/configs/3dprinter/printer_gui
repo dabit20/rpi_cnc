@@ -89,10 +89,15 @@ class printer_gui(object):
     self.builder.get_object("axisx_button").set_active(True)
     self.command.mode(self.emc.MODE_MANUAL);
     
-  # Switch to manual mode if currently not in manual mode
+  # Switch to manual mode if currently not in manual mode. Also check teleop mode
   def gotomanualmode(self):	
     if self.status.task_mode != self.emc.MODE_MANUAL:
-    	self.command.mode(self.emc.MODE_MANUAL);
+	print "Switching to manual mode.."
+    	self.command.mode(self.emc.MODE_MANUAL)
+    if self.status.motion_type != self.emc.TRAJ_MODE_TELEOP:
+	print "Switching to teleop mode.."
+    	self.command.teleop_enable(True)
+    	#self.command.traj_mode(self.emc.MODE_TELEOP)
 
   def periodic(self): # fetch status items and update screen
     self.status.poll()
@@ -140,6 +145,7 @@ class printer_gui(object):
     	
   # Jog button handlers
   def on_hal_jogplus_pressed(self, widget, data=None):
+    print "selectedaxis ", self.selectedaxis
     self.gotomanualmode()
     if self.status.joint[self.selectedaxis]['homed']:
         self.command.jog(self.emc.JOG_CONTINUOUS,self.selectedaxis,False,10)
@@ -149,12 +155,12 @@ class printer_gui(object):
     if self.status.joint[self.selectedaxis]['homed']:
       self.command.jog(self.emc.JOG_STOP,self.selectedaxis,False)
 
-  def on_hal_jogminus_pressed(self, widget, data=None):
+  def on_hal_jogmin_pressed(self, widget, data=None):
     self.gotomanualmode()
     if self.status.joint[self.selectedaxis]['homed']:
         self.command.jog(self.emc.JOG_CONTINUOUS,self.selectedaxis,False,-10)
   
-  def on_hal_jogminus_released(self, widget, data=None):
+  def on_hal_jogmin_released(self, widget, data=None):
     self.gotomanualmode()
     if self.status.joint[self.selectedaxis]['homed']:
       self.command.jog(self.emc.JOG_STOP,self.selectedaxis,False)

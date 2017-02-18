@@ -13,7 +13,7 @@ setp auxcontroller.0.chan-Kp-3 [PID]EXTRUDER_KP
 setp auxcontroller.0.chan-Ki-3 [PID]EXTRUDER_KI
 net extruder-settemp printer_gui.extruder_settemp.value => auxcontroller.0.chan-command-3
 net extruder-actualtemp auxcontroller.0.thermistor-temperature-0 => printer_gui.hal_meter_extrudertemp
-#net  printer_gui.
+net  extruder-enable printer_gui.extruder_onoff => auxcontroller.0.chan-isenabled-3
 
 # Our heated build platform. 
 # Hook up second NTC to channel 6, first 230VAC channel
@@ -22,14 +22,14 @@ setp auxcontroller.0.chan-Ki-6 [PID]BUILDPLATFORM_KI
 setp auxcontroller.0.chan-feedbackid-6 1
 net buildplatform-settemp printer_gui.buildplatform_settemp.value => auxcontroller.0.chan-command-6
 net buildplatform-actualtemp auxcontroller.0.thermistor-temperature-1 => printer_gui.hal_meter_buildplatformtemp
-setp auxcontroller.0.chan-isenabled-6 true
+net  buildplatform-enable printer_gui.buildplatform_onoff => auxcontroller.0.chan-isenabled-6
 
 # Our heated chamber
 # Hook up third NTC to channel 7, second 230VAC channel
 setp auxcontroller.0.chan-Kp-7 [PID]BUILDCHAMBER_KP
 setp auxcontroller.0.chan-Ki-7 [PID]BUILDCHAMBER_KI
 setp auxcontroller.0.chan-feedbackid-7 2
-net buildplatform-settemp printer_gui.buildspace_settemp.value => auxcontroller.0.chan-command-7
-net buildplatform-actualtemp auxcontroller.0.thermistor-temperature-2 => printer_gui.hal_meter_buildspacetemp
-setp auxcontroller.0.chan-isenabled-7 true
+net heatchamber-settemp printer_gui.buildspace_settemp.value => auxcontroller.0.chan-command-7
+net heatchamber-actualtemp auxcontroller.0.thermistor-temperature-2 => printer_gui.hal_meter_buildspacetemp
+net  heatchamber-enable printer_gui.buildspace_onoff => auxcontroller.0.chan-isenabled-7
 
