@@ -189,7 +189,7 @@ void SysTick_callback(void)
 	if (++pidctr >= NROUTCHANNELS)
 		pidctr=0;
 	// Start a ADC/DMA cycle
-	if ((++adcconv_ctr & 0x03) == 0x03) {
+	if ((++adcconv_ctr & 0x07) == 0x07) {
 		if (++avgctr >= NR_AVG_POINTS)
 			avgctr=0;
 		HAL_ADC_Start_DMA(&hadc1, (uint32_t *)&ADCresults[avgctr][0], NR_ADC_CHANNELS);
@@ -257,7 +257,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	GPIO_InitTypeDef GPIO_InitStruct;
 	int i,j;
-	float adcavg, ntcres, logntcres, invT;
+	float adcavg, logntcres, invT;
 //	HAL_StatusTypeDef res;
 	// Packet used to return thermistor temps to host
 	_d2h_pkt1 d2h_pkt1;
@@ -295,6 +295,9 @@ int main(void)
 		for (j=0;j<NR_AVG_POINTS;j++)
 			ADCresults[j][i] = 0;
 	}
+	// Self-calibrate ADC
+	while(HAL_ADCEx_Calibration_Start(&hadc1) != HAL_OK);          
+	
 	// Initialise modulator data structures
 	// 12VDC outputs
 	modulator[OUTID_DC12V_1].GPIOpin = DC12V_PDM1_Pin; modulator[OUTID_DC12V_1].GPIOport = DC12V_PDM1_GPIO_Port; modulator[OUTID_DC12V_1].Speed = DC_FAST;
@@ -407,6 +410,7 @@ int main(void)
 			  if (adcavg > 3.0f && adcavg < 4092.0f) {
 				  //ntcres = thermistor[i].RefResistorValue * ((float)(4095-ADCresults[i]) / (float)(ADCresults[i]+1));
 				  thermistor[i].Resistance = thermistor[i].RefResistorValue * ((4095.0f / adcavg)-1.0f);
+					//thermistor[i].Resistance = adcavg;
 				  logntcres = log(thermistor[i].Resistance);
 				  invT = thermistor[i].SteinhartHart[0] + logntcres*thermistor[i].SteinhartHart[1] + logntcres*logntcres*thermistor[i].SteinhartHart[2] + logntcres*logntcres*logntcres*thermistor[i].SteinhartHart[3];
 				  invT = 1.0f/invT;
@@ -527,7 +531,7 @@ static void MX_ADC1_Init(void)
     */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_55CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
