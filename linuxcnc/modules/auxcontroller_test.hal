@@ -20,11 +20,16 @@ setp auxcontroller.0.chan-isenabled-3 true
 # Fixed 50% on channel 6 (first 230VAC channel)
 setp auxcontroller.0.chan-Kp-6 1.0
 setp auxcontroller.0.chan-feedbackid-6 -1
-setp auxcontroller.0.chan-command-6 0.5
+setp auxcontroller.0.thermistor-shhA-1 0.0136368
+setp auxcontroller.0.thermistor-shhB-1 -0.003736136
+setp auxcontroller.0.thermistor-shhC-1 0.000399805481
+setp auxcontroller.0.thermistor-shhD-1 -0.00001327907
+
+setp auxcontroller.0.chan-command-6 0.0
 setp auxcontroller.0.chan-isenabled-6 true
 
 
 
 start
 
-#loadusr halscope
+loadusr halshow

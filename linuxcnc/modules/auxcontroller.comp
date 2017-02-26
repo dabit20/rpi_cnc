@@ -114,8 +114,8 @@ static int FindAndOpenUSBdevice(void) {
 	for (i=0;i<16;i++) {		
 		snprintf(buf, sizeof(buf), "/dev/hidraw%d", i);
 		fprintf(stderr,"Trying to open %s ..", buf);
-//		fd = open(buf, O_RDWR|O_NONBLOCK);
-		fd = open(buf, O_RDWR);	/* Note: do not rely on O_NONBLOCK; there is a kernel bug that prevents nonblock on disconnect */
+		fd = open(buf, O_RDWR|O_NONBLOCK);
+//		fd = open(buf, O_RDWR);	/* Note: do not rely on O_NONBLOCK; there is a kernel bug that prevents nonblock on disconnect */
 		if (fd > 0) {
 			fprintf(stderr,"Succes. Querying device for VID/PID..\n");
 			/* Opening the device succeeded. Extract VID/PID and compare */
@@ -209,38 +209,50 @@ void user_mainloop(void) {
 				ret=write(usbfd, xmitbuf, 65);
 				if (ret != 65) {
 					fprintf(stderr,"USB transmit fail: %d bytes transmitted. Number of succesful packets received %d\n", ret, pktctr);
+					close(usbfd);
+					usbfd = -1;
 				} else {
 				     	pktctr++;
 				}
 			}
+			/* Wait a while. For temperatures we don;t need to communicate 1000x a second with the controller */
+			usleep(10000);
+			
 			/* See if there is data available */
-			ret = read(usbfd, xmitbuf, 64);
-			idx = 0;
-			if (ret == 64) {
-				while (idx<64) {
-					data = &xmitbuf[idx];
-					/* Determine packet type and process the packet */
-					switch (data[1]) {
-						case PKT_THERMISTOR_VALUE:
-							thermistorid = ((sPkt_ThermistorValue *)data)->ThermistorID;
-							if (thermistorid < NRTHERMISTORS) {
-								thermistor_isvalid(thermistorid) = ((sPkt_ThermistorValue *)data)->bIsValid;
-								thermistor_temperature(thermistorid) = ((sPkt_ThermistorValue *)data)->TempCelcius;
-								thermistor_resistance(thermistorid) = ((sPkt_ThermistorValue *)data)->Resistance;
-								debug_receptionctr = (debug_receptionctr + 1);
-							}
-						break;
-						/* End of data frame command */
-						case PKT_ENDOFCOMMAND:
-							idx = 64;
-						break;
-					}
-					/* go to next packet (or next byte if there was none) */
-					if (data[0])
-						idx += data[0];
-					else
-						idx++;
-					}
+			if (usbfd > 0) {
+				ret = read(usbfd, xmitbuf, 64);
+				idx = 0;
+				if (ret == 64) {
+					while (idx<64) {
+						data = &xmitbuf[idx];
+						/* Determine packet type and process the packet */
+						switch (data[1]) {
+							case PKT_THERMISTOR_VALUE:
+								thermistorid = ((sPkt_ThermistorValue *)data)->ThermistorID;
+								if (thermistorid < NRTHERMISTORS) {
+									thermistor_isvalid(thermistorid) = ((sPkt_ThermistorValue *)data)->bIsValid;
+									thermistor_temperature(thermistorid) = ((sPkt_ThermistorValue *)data)->TempCelcius;
+									thermistor_resistance(thermistorid) = ((sPkt_ThermistorValue *)data)->Resistance;
+									debug_receptionctr = (debug_receptionctr + 1);
+								}
+							break;
+							/* End of data frame command */
+							case PKT_ENDOFCOMMAND:
+								idx = 64;
+							break;
+						}
+						/* go to next packet (or next byte if there was none) */
+						if (data[0])
+							idx += data[0];
+						else
+							idx++;
+						}
+				}
+			}
+			
+			/* Reopen USB device when required */
+			if (usbfd <0) {
+				usbfd = FindAndOpenUSBdevice();
 			}
 			
 			usleep (5000);
