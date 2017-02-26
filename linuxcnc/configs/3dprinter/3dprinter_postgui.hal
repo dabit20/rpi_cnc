@@ -25,6 +25,7 @@ setp auxcontroller.0.thermistor-shhA-1 .01363681275620580
 setp auxcontroller.0.thermistor-shhB-1 -0.003736136483341256
 setp auxcontroller.0.thermistor-shhC-1 0.0003998054814759648
 setp auxcontroller.0.thermistor-shhD-1 -0.00001327907341235455
+setp auxcontroller.0.thermistor-maxtemp-1 150
 net buildplatform-settemp printer_gui.buildplatform_settemp.value => auxcontroller.0.chan-command-6
 net buildplatform-actualtemp auxcontroller.0.thermistor-temperature-1 => printer_gui.hal_meter_buildplatformtemp
 net buildplatform-enable printer_gui.buildplatform_onoff => auxcontroller.0.chan-isenabled-6
@@ -34,6 +35,7 @@ net buildplatform-enable printer_gui.buildplatform_onoff => auxcontroller.0.chan
 setp auxcontroller.0.chan-Kp-7 [PID]BUILDCHAMBER_KP
 setp auxcontroller.0.chan-Ki-7 [PID]BUILDCHAMBER_KI
 setp auxcontroller.0.chan-feedbackid-7 2
+setp auxcontroller.0.thermistor-maxtemp-2 85
 net heatchamber-settemp printer_gui.buildspace_settemp.value => auxcontroller.0.chan-command-7
 net heatchamber-actualtemp auxcontroller.0.thermistor-temperature-2 => printer_gui.hal_meter_buildspacetemp
 net  heatchamber-enable printer_gui.buildspace_onoff => auxcontroller.0.chan-isenabled-7
