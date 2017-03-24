@@ -5,6 +5,7 @@ import gobject
 import gladevcp.makepins
 from gladevcp.gladebuilder import GladeBuilder
 import hal
+import hal_glib
 import sys,os
 import ConfigParser
 
@@ -72,8 +73,9 @@ class printer_gui(object):
     self.builder.connect_signals(self)
     self.window = self.builder.get_object("window1")        
     self.panel = gladevcp.makepins.GladePanel(self.halcomp, xmlname, self.builder, None)
+    self._init_hal_pins()
     self.halcomp.ready()
-    self.builder.get_object("window1").set_title("Dabit3D printer gui v0.22 ");
+    self.builder.get_object("window1").set_title("Dabit3D printer gui v0.23 ");
     self.prefs = preferences()
     self.builder.get_object("extruder_settemp").set_value(self.prefs.getpref("extruder_settemp", 160.0, float))
     self.builder.get_object("buildplatform_settemp").set_value(self.prefs.getpref("buildplatform_settemp", 40.0, float))
@@ -87,16 +89,66 @@ class printer_gui(object):
     self.selectedaxis = 0
     self.jogwheel_oldvalue = 0
     self.builder.get_object("axisx_button").set_active(True)
-    self.command.mode(self.emc.MODE_MANUAL);
+    self.command.mode(self.emc.MODE_MANUAL);    
     
+  # Setup HAL pins to allow M-code interaction
+  def _init_hal_pins(self):    
+    pin = self.halcomp.newpin("cmd-extruder.enable", hal.HAL_BIT, hal.HAL_IN)
+    hal_glib.GPin(pin).connect("value_changed", self._on_cmd_extruder_enable)
+    pin = self.halcomp.newpin("cmd-extruder.temperature", hal.HAL_FLOAT, hal.HAL_IN)
+    hal_glib.GPin(pin).connect("value_changed", self._on_cmd_extruder_settemp)    
+    pin = self.halcomp.newpin("cmd-buildplatform.enable", hal.HAL_BIT, hal.HAL_IN)
+    hal_glib.GPin(pin).connect("value_changed", self._on_cmd_buildplatform_enable)
+    pin = self.halcomp.newpin("cmd-buildplatform.temperature", hal.HAL_FLOAT, hal.HAL_IN)
+    hal_glib.GPin(pin).connect("value_changed", self._on_cmd_buildplatform_settemp)
+    pin = self.halcomp.newpin("cmd-buildspace.enable", hal.HAL_BIT, hal.HAL_IN)
+    hal_glib.GPin(pin).connect("value_changed", self._on_cmd_buildspace_enable)
+    pin = self.halcomp.newpin("cmd-buildspace.temperature", hal.HAL_FLOAT, hal.HAL_IN)
+    hal_glib.GPin(pin).connect("value_changed", self._on_cmd_buildspace_settemp)
+
+    
+  def _on_cmd_extruder_enable(self, pin):
+    if self.status.task_state == self.emc.STATE_ON:
+      self.builder.get_object("extruder_onoff").set_active(pin.get())
+    
+  def _on_cmd_extruder_settemp(self, pin):
+    if self.status.task_state == self.emc.STATE_ON:
+      if pin.get() >= 20:
+        self.builder.get_object("extruder_settemp").set_value(pin.get())
+      else:
+        self.builder.get_object("extruder_onoff").set_active(False)
+
+  def _on_cmd_buildplatform_enable(self, pin):
+    if self.status.task_state == self.emc.STATE_ON:
+      self.builder.get_object("buildplatform_onoff").set_active(pin.get())
+    
+  def _on_cmd_buildplatform_settemp(self, pin):
+    if self.status.task_state == self.emc.STATE_ON:
+      if pin.get() >= 20:
+        self.builder.get_object("buildplatform_settemp").set_value(pin.get())
+      else:
+        self.builder.get_object("buildplatform_onoff").set_active(False)      
+        
+  def _on_cmd_buildspace_enable(self, pin):
+    if self.status.task_state == self.emc.STATE_ON:
+      self.builder.get_object("buildspace_onoff").set_active(pin.get())
+    
+  def _on_cmd_buildspace_settemp(self, pin):
+    if self.status.task_state == self.emc.STATE_ON:
+      if pin.get() >= 20:
+        self.builder.get_object("buildspace_settemp").set_value(pin.get())
+      else:
+        self.builder.get_object("buildspace_onoff").set_active(False)      
+        
+
   # Switch to manual mode if currently not in manual mode. Also check teleop mode
   def gotomanualmode(self):	
     if self.status.task_mode != self.emc.MODE_MANUAL:
 	print "Switching to manual mode.."
     	self.command.mode(self.emc.MODE_MANUAL)
-    if self.status.motion_type != self.emc.TRAJ_MODE_TELEOP:
-	print "Switching to teleop mode.."
-    	self.command.teleop_enable(True)
+    #if self.status.motion_type != self.emc.TRAJ_MODE_TELEOP:
+	#print "Switching to teleop mode.."
+    	#self.command.teleop_enable(True)
     	#self.command.traj_mode(self.emc.MODE_TELEOP)
 
   def periodic(self): # fetch status items and update screen
@@ -127,6 +179,7 @@ class printer_gui(object):
     if self.builder.get_object("axisx_button").get_active() == True:
     	self.builder.get_object("axisy_button").set_active(False)
     	self.builder.get_object("axisz_button").set_active(False)
+    	self.builder.get_object("axisa_button").set_active(False)
     	self.selectedaxis = 0
         
   def on_yaxis_button_clicked(self, widget, data=None):
@@ -134,6 +187,7 @@ class printer_gui(object):
     if self.builder.get_object("axisy_button").get_active() == True:
     	self.builder.get_object("axisx_button").set_active(False)
     	self.builder.get_object("axisz_button").set_active(False)
+    	self.builder.get_object("axisa_button").set_active(False)
     	self.selectedaxis = 1
     
   def on_zaxis_button_clicked(self, widget, data=None):
@@ -141,14 +195,24 @@ class printer_gui(object):
     if self.builder.get_object("axisz_button").get_active() == True:
     	self.builder.get_object("axisx_button").set_active(False)
     	self.builder.get_object("axisy_button").set_active(False)
+    	self.builder.get_object("axisa_button").set_active(False)
     	self.selectedaxis = 2
+    	
+  def on_aaxis_button_clicked(self, widget, data=None):
+    print "Axis A button clicked, widget=",widget
+    if self.builder.get_object("axisa_button").get_active() == True:
+    	self.builder.get_object("axisx_button").set_active(False)
+    	self.builder.get_object("axisy_button").set_active(False)
+    	self.builder.get_object("axisz_button").set_active(False)
+    	self.selectedaxis = 3
     	
   # Jog button handlers
   def on_hal_jogplus_pressed(self, widget, data=None):
+    jogspeeds=[150,150,20,5]
     print "selectedaxis ", self.selectedaxis
     self.gotomanualmode()
     if self.status.joint[self.selectedaxis]['homed']:
-        self.command.jog(self.emc.JOG_CONTINUOUS,False,self.selectedaxis,150)
+        self.command.jog(self.emc.JOG_CONTINUOUS,False,self.selectedaxis,jogspeeds[self.selectedaxis])
   
   def on_hal_jogplus_released(self, widget, data=None):
     self.gotomanualmode()
@@ -156,9 +220,10 @@ class printer_gui(object):
       self.command.jog(self.emc.JOG_STOP,False,self.selectedaxis)
 
   def on_hal_jogmin_pressed(self, widget, data=None):
+    jogspeeds=[-150,-150,-20,-5]
     self.gotomanualmode()
     if self.status.joint[self.selectedaxis]['homed']:
-        self.command.jog(self.emc.JOG_CONTINUOUS,False,self.selectedaxis,-150)
+        self.command.jog(self.emc.JOG_CONTINUOUS,False,self.selectedaxis,jogspeeds[self.selectedaxis])
   
   def on_hal_jogmin_released(self, widget, data=None):
     self.gotomanualmode()
