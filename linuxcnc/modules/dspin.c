@@ -162,14 +162,18 @@ void gpioSetPullUpDown(unsigned gpio, unsigned pud)
 
 inline int gpioRead(unsigned gpio)
 {
+#ifdef __arm__
    if ((*(gpioReg + GPLEV0 + PI_BANK) & PI_BIT) != 0) return 1;
    else                                         return 0;
+#endif   
 }
 
 inline void gpioWrite(unsigned gpio, unsigned level)
 {
+#ifdef __arm__
    if (level == 0) *(gpioReg + GPCLR0 + PI_BANK) = PI_BIT;
    else            *(gpioReg + GPSET0 + PI_BANK) = PI_BIT;
+#endif   
 }
 
 unsigned gpioHardwareRevision(void)
@@ -372,6 +376,7 @@ inline void minTiming_end(uint32_t microseconds)
 /* Write an 8-bit command */
 inline void dSpin_writecommand(uint8_t command)
 {
+#ifdef __arm__
         register int i,j;
         minTiming_start();
         for (j=0;j<NR_JOINTS;j++) gpioWrite (dSPIN_CS[j], 0);
@@ -394,6 +399,7 @@ inline void dSpin_writecommand(uint8_t command)
         for (j=0;j<NR_JOINTS;j++)  gpioWrite (dSPIN_MOSI[j], 0);
         for (j=0;j<NR_JOINTS;j++) gpioWrite (dSPIN_CS[j], 1);
         minTiming_end(MIN_TIMING);
+#endif        
 }
 
 /* Write a single byte of the command payload */
@@ -430,6 +436,7 @@ inline void dSpin_writebyte(uint8_t bytes[NR_JOINTS])
 /* Fetch a single byte */
 inline void dSpin_readbyte(uint32_t received[NR_JOINTS])
 {
+#ifdef __arm__
         register int i,j;
         minTiming_start();
         for (j=0;j<NR_JOINTS;j++) gpioWrite (dSPIN_CS[j], 0);
@@ -451,22 +458,26 @@ inline void dSpin_readbyte(uint32_t received[NR_JOINTS])
         minTiming_start();
         for (j=0;j<NR_JOINTS;j++) gpioWrite (dSPIN_CS[j], 1);
         minTiming_end(MIN_TIMING);
+#endif        
 }
 
 /* Read a parameter that returns 2 bytes as the payload */
 void dSpin_readparam1byte(uint8_t command, uint32_t received[NR_JOINTS])
 {
+#ifdef __arm__
         register int i,j;
         command |= 0x20;
         for (j=0;j<NR_JOINTS;j++) received[j] = 0;
         dSpin_writecommand (command);
         /* Fetch 8 databits */
         dSpin_readbyte (received);
+#endif        
 }
 
 /* Read a parameter that returns 2 bytes as the payload */
 void dSpin_readparam2bytes(uint8_t command, uint32_t received[NR_JOINTS])
 {
+#ifdef __arm__
         register int i,j;
         command |= 0x20;
         for (j=0;j<NR_JOINTS;j++) received[j] = 0;
@@ -474,11 +485,13 @@ void dSpin_readparam2bytes(uint8_t command, uint32_t received[NR_JOINTS])
         /* Fetch 16 databits */
         dSpin_readbyte (received);
         dSpin_readbyte (received);        
+#endif        
 }
 
 /* Read a parameter that returns 3 bytes as the payload */
 void dSpin_readparam3bytes(uint8_t command, uint32_t received[NR_JOINTS])
 {
+#ifdef __arm__
         register int j;
         command |= 0x20;
         for (j=0;j<NR_JOINTS;j++) received[j] = 0;
@@ -487,17 +500,20 @@ void dSpin_readparam3bytes(uint8_t command, uint32_t received[NR_JOINTS])
         dSpin_readbyte (received);
         dSpin_readbyte (received);
         dSpin_readbyte (received);         
+#endif        
 }
 
 /* Read a parameter that returns 2 bytes as the payload */
 void dSpin_getstatus(uint32_t received[NR_JOINTS])
 {
+#ifdef __arm__
         register int i,j;
         for (j=0;j<NR_JOINTS;j++) received[j] = 0;
         dSpin_writecommand (0xd0);
         /* Fetch 16 databits */
         dSpin_readbyte (received);
         dSpin_readbyte (received);        
+#endif        
 }
 
 
@@ -534,6 +550,7 @@ void dSpin_writeparam2byte(uint8_t command, uint32_t payload[NR_JOINTS])
 /* Send a RUN command to the attached drives, with speed in steps/sec as the parameter */
 void dSpin_run (float speed[NR_JOINTS])
 {
+#ifdef __arm__
         register int i,j;
         uint32_t cmd[NR_JOINTS];
         uint8_t bytes[NR_JOINTS];
@@ -565,6 +582,7 @@ void dSpin_run (float speed[NR_JOINTS])
                 bytes[j] = (uint8_t)(cmd[j] & 0xff);
         }
         dSpin_writebyte (bytes);
+#endif        
 }
 
 /* Setup I/O lines and reset chips */
@@ -781,20 +799,26 @@ static int __comp_get_data_size(void) { return 0; }
 int rtapi_app_main(void) {
 
     int ret,i;
+    #ifdef __arm__
     rtapi_print("loading dspin module\n");
+    #else
+    rtapi_print("loading dspin module (x86 debug fake)\n");
+    #endif
     ret = hal_init("dspin");
     if (ret < 0)
         return ret;
     comp_id = ret;
-    /* Open GPIO */
+    /* Open GPIO, but only if we are running on ARM (full RPi check would be better) */
+    #ifdef __arm__
     if (gpioInitialise() < 0) {
          rtapi_print("GPIO initialise went wrong\n");
          hal_exit(comp_id);
     }
     /* Initialise dSpin drives */
     initdSpin();
-	/* Initialise extra IO */
-	initextio();
+    /* Initialise extra IO */
+    initextio();
+    #endif
     /* Export pins and finalize HAL component creation */
     ret = export("dspin", 0);
     if(ret) {
@@ -817,16 +841,25 @@ static void _(struct __comp_state *__comp_inst, long period) {
 	float speed[NR_JOINTS];
 	int32_t pos[NR_JOINTS];	
 	uint32_t stat[NR_JOINTS];
+	/* If we are not running on arm, we are debugging. Fake the position */
+	#ifndef __arm__
+	static hal_float_t fakepos[NR_JOINTS];
+	#endif
 	if (!(*__comp_inst->enable)) {
 	        /* We are disabled, put bridge in Hi-Z */
 	        if (counter==0)
 	                dSpin_writecommand (dSPIN_SOFT_HIZ);
 	        if (counter < 0xffff)
 	                counter++;
+	        #ifndef __arm__
+	        for (i=0;i<NR_JOINTS;i++)
+	          fakepos[i] = 0.0;
+	        #endif
 	} else {
 	        counter = 0;
 	        /* We are enabled. */
 	        /* get the position feedback .. */
+	        #ifdef __arm__
 	        dSpin_readparam3bytes (dSPIN_ABS_POS, (uint32_t *)pos);
 	        for (j=0;j<NR_JOINTS;j++) { 
 	                /* Sign-extend the 22-bit signed position value to 32-bit */
@@ -835,7 +868,7 @@ static void _(struct __comp_state *__comp_inst, long period) {
 	                /* Calculate the current position. Note the 128-ustep correction */
 	                *__comp_inst->position_fb_joint[j] = ((hal_float_t)pos[j]) / (__comp_inst->scale_joint[j] * 128.0);
 	        }
-                /* Get status. Do this through an intermediate uint32_t array; reading directly into __comp_inst caused trouble */
+	        /* Get status. Do this through an intermediate uint32_t array; reading directly into __comp_inst caused trouble */
 		dSpin_getstatus(stat);
 	        for (j=0;j<NR_JOINTS;j++) { 
 	                __comp_inst->status_joint[j] = (hal_u32_t)stat[j];
@@ -862,6 +895,16 @@ static void _(struct __comp_state *__comp_inst, long period) {
 				gpioWrite (EXTOUT_LINES[j], *__comp_inst->extout[j]);
 			}
 		#endif
+		/* non-ARM mode. Fake position feedback and switch status */
+		#else
+	        for (j=0;j<NR_JOINTS;j++) {
+	        	fakepos[j] += (*__comp_inst->velocity_cmd_joint[j]) * 1.0e-9 * (hal_float_t)period;
+	        	*__comp_inst->position_fb_joint[j] = fakepos[j];
+	        	*__comp_inst->switch_status[j] = (fabs(fakepos[j]) > 100.0) ? true : false;	        	  
+	        }
+	        #endif
+                
+
 	}
 }
 
