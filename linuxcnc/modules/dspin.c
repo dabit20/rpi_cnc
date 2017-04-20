@@ -34,7 +34,7 @@ MODULE_SUPPORTED_DEVICE("dSpin");
 /************* Various important defines ****************/
 
 /* Number of joints/motors */
-#define NR_JOINTS 3
+#define NR_JOINTS 4
 
 /* Raspberry BCM IO numbers for the various wires. 
  * Define one number for each joint. Shared pins may use the same number 
@@ -42,8 +42,8 @@ MODULE_SUPPORTED_DEVICE("dSpin");
 static uint8_t dSPIN_RESET[NR_JOINTS] = { 17 };             /* STBY lines of attached dSpin modules. May be shared between multiple modules */
 static uint8_t dSPIN_CS[NR_JOINTS] = { 27 };                    /* CSN lines of attached dSpin modules. May be shared between multiple modules */
 static uint8_t dSPIN_CLK[NR_JOINTS] = { 9 };                    /* CK lines of attached dSpin modules. May be shared between multiple modules */
-static uint8_t dSPIN_MOSI[NR_JOINTS] = { 10, 23, 5/*, 13 */};       /* SDI lines of attached dSpin modules. Separate per module */
-static uint8_t dSPIN_MISO[NR_JOINTS] = { 11, 24, 6/*, 26 */};       /* SDO lines of attached dSpin modules. Separate per module */
+static uint8_t dSPIN_MOSI[NR_JOINTS] = { 10, 23, 5, 13 };       /* SDI lines of attached dSpin modules. Separate per module */
+static uint8_t dSPIN_MISO[NR_JOINTS] = { 11, 24, 6, 26 };       /* SDO lines of attached dSpin modules. Separate per module */
 
 /* Minimum delay in microseconds between bit toggles. May be 0 to disable the timing checks */
 #define MIN_TIMING 1
@@ -51,11 +51,11 @@ static uint8_t dSPIN_MISO[NR_JOINTS] = { 11, 24, 6/*, 26 */};       /* SDO lines
 /* BEMF compensation parameters for each motor. See datasheet and ST AN4144 for information on how
  * to obtain these 
  */
-static uint8_t KVAL_HOLD[NR_JOINTS] = { 0x24, 0x24, 0x24 };
-static uint8_t KVAL_RUN[NR_JOINTS] = { 0x2F, 0x2F, 0x2F };         
-static uint8_t ST_SLP[NR_JOINTS] = { 0x40, 0x40, 0x40 }; 
-static uint8_t  FN_SLP[NR_JOINTS] = { 0x57, 0x57, 0x57 }; 
-static uint16_t INT_SPD[NR_JOINTS] = { 0xE4E, 0xE4E, 0xE4E }; 
+static uint8_t KVAL_HOLD[NR_JOINTS] = { 0x24, 0x24, 0x13, 0x13 };
+static uint8_t KVAL_RUN[NR_JOINTS] = { 0x2F, 0x2F, 0x33, 0x33 };         
+static uint8_t ST_SLP[NR_JOINTS] = { 0x40, 0x40, 0x17, 0x17,  }; 
+static uint8_t  FN_SLP[NR_JOINTS] = { 0x57, 0x57, 0x4B, 0x4B }; 
+static uint16_t INT_SPD[NR_JOINTS] = { 0xE4E, 0xE4E, 0x1026, 0x1026 }; 
 
 /************* Code included from minimal_gpio.c, taken from http://abyz.co.uk/rpi/pigpio/ ****************/
 
@@ -598,8 +598,8 @@ int initdSpin(void)
         /* Set min speed to 0 and enable low speed optimization up to 10 steps/sec (0.238 step/s per bit)*/
         for (j=0;j<NR_JOINTS;j++) datastore[j] = 5 | 0x1000;
         dSpin_writeparam2byte  (dSPIN_MIN_SPEED, datastore);       
-        /* Set fullstepping treshold speed to 991 steps/s (15.25 steps/s per bit) */
-        for (j=0;j<NR_JOINTS;j++) datastore[j] = 65;
+        /* Set fullstepping treshold speed to 397 steps/s (15.25 steps/s per bit) */
+        for (j=0;j<NR_JOINTS;j++) datastore[j] = 26;
         dSpin_writeparam2byte  (dSPIN_FS_SPD, datastore);
         /* Set max acceleration and deceleration values. Base these on 1G using 2.5 step/mm, which calculates to
             25000 steps/s/s. Scale by 0.137438 to get the required 12-bit value (3436d). This really should be a parameter */
@@ -646,6 +646,7 @@ struct __comp_state {
     hal_bit_t *steploss_error[NR_JOINTS];            /* Step loss error on either coil A or B */
     hal_bit_t *overcurrent_error[NR_JOINTS];       /* overcurrent error */
     hal_bit_t *thermal_error[NR_JOINTS];           /* Thermal warning or shutdown */
+	hal_bit_t *switch_status[NR_JOINTS];           /* Switch status bit */
     
     
     hal_float_t scale_joint[NR_JOINTS];		/* Scale from units to steps */
@@ -688,13 +689,16 @@ static int export(char *prefix, long extra_arg) {
 		if(r != 0) return r;
 		r = hal_pin_bit_newf(HAL_OUT, &(inst->steploss_error[i]), comp_id,
                     "%s.steploss-error-joint%d", prefix, i);
-                if(r != 0) return r;
-                r = hal_pin_bit_newf(HAL_OUT, &(inst->overcurrent_error[i]), comp_id,
-                    "%s.overcurrent-error-joint%d", prefix, i);
-                if(r != 0) return r;
-                r = hal_pin_bit_newf(HAL_OUT, &(inst->thermal_error[i]), comp_id,
-                    "%s.thermal-error-joint%d", prefix, i);
-                if(r != 0) return r;                    
+        if(r != 0) return r;
+		r = hal_pin_bit_newf(HAL_OUT, &(inst->overcurrent_error[i]), comp_id,
+			"%s.overcurrent-error-joint%d", prefix, i);
+		if(r != 0) return r;
+		r = hal_pin_bit_newf(HAL_OUT, &(inst->thermal_error[i]), comp_id,
+			"%s.thermal-error-joint%d", prefix, i);
+		if(r != 0) return r;                    
+		r = hal_pin_bit_newf(HAL_OUT, &(inst->switch_status[i]), comp_id,
+			"%s.switch-status-joint%d", prefix, i);
+		if(r != 0) return r;                    
 	}
     r = hal_pin_bit_newf(HAL_IN, &(inst->enable), comp_id,
         "%s.enable", prefix);
