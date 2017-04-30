@@ -46,14 +46,14 @@ static uint8_t dSPIN_MOSI[NR_JOINTS] = { 10, 23, 5, 13 };       /* SDI lines of 
 static uint8_t dSPIN_MISO[NR_JOINTS] = { 11, 24, 6, 26 };       /* SDO lines of attached dSpin modules. Separate per module */
 
 /* Minimum delay in microseconds between bit toggles. May be 0 to disable the timing checks */
-#define MIN_TIMING 2
+#define MIN_TIMING 1
 
 /* BEMF compensation parameters for each motor. See datasheet and ST AN4144 for information on how
  * to obtain these 
  */
 static uint8_t KVAL_HOLD[NR_JOINTS] = { 0x24, 0x24, 0x13, 0x13 };
 static uint8_t KVAL_RUN[NR_JOINTS] = { 0x2F, 0x2F, 0x33, 0x33 };         
-static uint8_t ST_SLP[NR_JOINTS] = { 0x40, 0x40, 0x17, 0x17,  }; 
+static uint8_t ST_SLP[NR_JOINTS] = { 0x40, 0x40, 0x17, 0x17  }; 
 static uint8_t  FN_SLP[NR_JOINTS] = { 0x57, 0x57, 0x4B, 0x4B }; 
 static uint16_t INT_SPD[NR_JOINTS] = { 0xE4E, 0xE4E, 0x1026, 0x1026 }; 
 
@@ -816,6 +816,7 @@ static void _(struct __comp_state *__comp_inst, long period) {
 	static uint16_t counter = 0;
 	float speed[NR_JOINTS];
 	int32_t pos[NR_JOINTS];	
+	uint32_t stat[NR_JOINTS];
 	if (!(*__comp_inst->enable)) {
 	        /* We are disabled, put bridge in Hi-Z */
 	        if (counter==0)
@@ -834,32 +835,33 @@ static void _(struct __comp_state *__comp_inst, long period) {
 	                /* Calculate the current position. Note the 128-ustep correction */
 	                *__comp_inst->position_fb_joint[j] = ((hal_float_t)pos[j]) / (__comp_inst->scale_joint[j] * 128.0);
 	        }
-                /* Get status */
+                /* Get status. Do this through an intermediate uint32_t array; reading directly into __comp_inst caused trouble */
+		dSpin_getstatus(stat);
 	        for (j=0;j<NR_JOINTS;j++) { 
-	                dSpin_getstatus((uint32_t *)__comp_inst->status_joint+j);
+	                __comp_inst->status_joint[j] = (hal_u32_t)stat[j];
 	                /* Decode a few status bits */
-	                *__comp_inst->steploss_error[j] = ((__comp_inst->status_joint[j] & 0x6000)==0x6000) ? false : true;
-	                *__comp_inst->overcurrent_error[j] = ((__comp_inst->status_joint[j] & 0x1000)==0x1000) ? false : true;
-	                *__comp_inst->thermal_error[j] = ((__comp_inst->status_joint[j] & 0x0c00)==0x0c00) ? false : true;
-					*__comp_inst->switch_status[j] = ((__comp_inst->status_joint[j] & 0x0004)==0x0004) ? true : false;
+	                *__comp_inst->steploss_error[j] = ((stat[j] & 0x6000)==0x6000) ? false : true;
+	                *__comp_inst->overcurrent_error[j] = ((stat[j] & 0x1000)==0x1000) ? false : true;
+	                *__comp_inst->thermal_error[j] = ((stat[j] & 0x0c00)==0x0c00) ? false : true;
+			*__comp_inst->switch_status[j] = ((stat[j] & 0x0004)==0x0004) ? true : false;
 	        }
 	        /* Run the motor at the commanded speed... */
 	        for (j=0;j<NR_JOINTS;j++) { 
 	                speed[j] = ((*__comp_inst->velocity_cmd_joint[j]) * __comp_inst->scale_joint[j]);
 	        }
 	        dSpin_run (speed);	
-			/* Process extra IO */
-			#if (NR_EXT_INPUTS>0)
-				for (j=0;j<NR_EXT_INPUTS;j++) {
-					*__comp_inst->extin[j] = gpioRead(EXTIN_LINES[j]);
-					*__comp_inst->extin_not[j] = *__comp_inst->extin[j] ? false : true;
-				}
-			#endif
-			#if (NR_EXT_OUTPUTS>0)
-				for (j=0;j<NR_EXT_OUTPUTS;j++) {
-					gpioWrite (EXTOUT_LINES[j], *__comp_inst->extout[j]);
-				}
-			#endif
+		/* Process extra IO */
+		#if (NR_EXT_INPUTS>0)
+			for (j=0;j<NR_EXT_INPUTS;j++) {
+				*__comp_inst->extin[j] = gpioRead(EXTIN_LINES[j]);
+				*__comp_inst->extin_not[j] = *__comp_inst->extin[j] ? false : true;
+			}
+		#endif
+		#if (NR_EXT_OUTPUTS>0)
+			for (j=0;j<NR_EXT_OUTPUTS;j++) {
+				gpioWrite (EXTOUT_LINES[j], *__comp_inst->extout[j]);
+			}
+		#endif
 	}
 }
 
