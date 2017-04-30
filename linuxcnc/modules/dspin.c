@@ -46,7 +46,7 @@ static uint8_t dSPIN_MOSI[NR_JOINTS] = { 10, 23, 5, 13 };       /* SDI lines of 
 static uint8_t dSPIN_MISO[NR_JOINTS] = { 11, 24, 6, 26 };       /* SDO lines of attached dSpin modules. Separate per module */
 
 /* Minimum delay in microseconds between bit toggles. May be 0 to disable the timing checks */
-#define MIN_TIMING 1
+#define MIN_TIMING 2
 
 /* BEMF compensation parameters for each motor. See datasheet and ST AN4144 for information on how
  * to obtain these 
@@ -56,6 +56,18 @@ static uint8_t KVAL_RUN[NR_JOINTS] = { 0x2F, 0x2F, 0x33, 0x33 };
 static uint8_t ST_SLP[NR_JOINTS] = { 0x40, 0x40, 0x17, 0x17,  }; 
 static uint8_t  FN_SLP[NR_JOINTS] = { 0x57, 0x57, 0x4B, 0x4B }; 
 static uint16_t INT_SPD[NR_JOINTS] = { 0xE4E, 0xE4E, 0x1026, 0x1026 }; 
+
+/* Extra input/output lines. Define the number of ext inputs and outputs, and define the arrays with BCM pin numbers */
+#define NR_EXT_INPUTS 3
+#if (NR_EXT_INPUTS>0)
+static uint8_t EXTIN_LINES[NR_EXT_INPUTS] = { 16, 20, 21};
+#endif
+
+#define NR_EXT_OUTPUTS 0
+#if (NR_EXT_OUTPUTS>0)
+static uint8_t EXTOUT_LINES[NR_EXT_OUTPUTS] = { };
+#endif
+
 
 /************* Code included from minimal_gpio.c, taken from http://abyz.co.uk/rpi/pigpio/ ****************/
 
@@ -634,6 +646,23 @@ int initdSpin(void)
 
 /************* end of dSpin control code ****************/
 
+/* Setup external input lines as input */
+void initextio(void)
+{
+	int j;        
+	#if (NR_EXT_INPUTS>0)
+		for (j=0;j<NR_EXT_INPUTS;j++) {
+			gpioSetMode (EXTIN_LINES[j], PI_INPUT);
+            gpioSetPullUpDown(EXTIN_LINES[j], PI_PUD_UP);
+		}
+	#endif
+	#if (NR_EXT_OUTPUTS>0)
+		for (j=0;j<NR_EXT_OUTPUTS;j++) {
+			gpioSetMode (EXTOUT_LINES[j], PI_OUTPUT);
+			gpioWrite (EXTOUT_LINES[j], 0);
+		}
+	#endif
+}
 
 /* Component id */
 static int comp_id;
@@ -647,10 +676,17 @@ struct __comp_state {
     hal_bit_t *overcurrent_error[NR_JOINTS];       /* overcurrent error */
     hal_bit_t *thermal_error[NR_JOINTS];           /* Thermal warning or shutdown */
 	hal_bit_t *switch_status[NR_JOINTS];           /* Switch status bit */
-    
+	
+	#if (NR_EXT_INPUTS>0)
+	hal_bit_t *extin[NR_EXT_INPUTS];				/* Auxiliary external inputs */
+	hal_bit_t *extin_not[NR_EXT_INPUTS];			/* Auxiliary external inputs, inverted */
+    #endif
+	#if (NR_EXT_OUTPUTS>0)
+	hal_bit_t *extout[NR_EXT_OUTPUTS];				/* Auxiliary external inputs */
+	#endif
     
     hal_float_t scale_joint[NR_JOINTS];		/* Scale from units to steps */
-     hal_u32_t status_joint[NR_JOINTS];
+    hal_u32_t status_joint[NR_JOINTS];
 };
 
 struct __comp_state *__comp_first_inst=0, *__comp_last_inst=0;
@@ -700,6 +736,25 @@ static int export(char *prefix, long extra_arg) {
 			"%s.switch-status-joint%d", prefix, i);
 		if(r != 0) return r;                    
 	}
+	/* Ext inputs */
+	#if (NR_EXT_INPUTS>0)
+		for (i=0;i<NR_EXT_INPUTS;i++) {
+			r = hal_pin_bit_newf(HAL_OUT, &(inst->extin[i]), comp_id,
+			"%s.extin%d", prefix, i);
+			if(r != 0) return r;
+			r = hal_pin_bit_newf(HAL_OUT, &(inst->extin_not[i]), comp_id,
+			"%s.extin-not%d", prefix, i);
+			if(r != 0) return r;
+		}
+	#endif
+	/* Ext outputs */
+	#if (NR_EXT_OUTPUTS>0)
+		for (i=0;i<NR_EXT_OUTPUTS;i++) {
+			r = hal_pin_bit_newf(HAL_IN, &(inst->extout[i]), comp_id,
+			"%s.extout%d", prefix, i);
+		if(r != 0) return r;
+		}
+	#endif
     r = hal_pin_bit_newf(HAL_IN, &(inst->enable), comp_id,
         "%s.enable", prefix);
     if(r != 0) return r;
@@ -738,6 +793,8 @@ int rtapi_app_main(void) {
     }
     /* Initialise dSpin drives */
     initdSpin();
+	/* Initialise extra IO */
+	initextio();
     /* Export pins and finalize HAL component creation */
     ret = export("dspin", 0);
     if(ret) {
@@ -784,12 +841,25 @@ static void _(struct __comp_state *__comp_inst, long period) {
 	                *__comp_inst->steploss_error[j] = ((__comp_inst->status_joint[j] & 0x6000)==0x6000) ? false : true;
 	                *__comp_inst->overcurrent_error[j] = ((__comp_inst->status_joint[j] & 0x1000)==0x1000) ? false : true;
 	                *__comp_inst->thermal_error[j] = ((__comp_inst->status_joint[j] & 0x0c00)==0x0c00) ? false : true;
+					*__comp_inst->switch_status[j] = ((__comp_inst->status_joint[j] & 0x0004)==0x0004) ? true : false;
 	        }
 	        /* Run the motor at the commanded speed... */
 	        for (j=0;j<NR_JOINTS;j++) { 
 	                speed[j] = ((*__comp_inst->velocity_cmd_joint[j]) * __comp_inst->scale_joint[j]);
 	        }
-	        dSpin_run (speed);	        
+	        dSpin_run (speed);	
+			/* Process extra IO */
+			#if (NR_EXT_INPUTS>0)
+				for (j=0;j<NR_EXT_INPUTS;j++) {
+					*__comp_inst->extin[j] = gpioRead(EXTIN_LINES[j]);
+					*__comp_inst->extin_not[j] = *__comp_inst->extin[j] ? false : true;
+				}
+			#endif
+			#if (NR_EXT_OUTPUTS>0)
+				for (j=0;j<NR_EXT_OUTPUTS;j++) {
+					gpioWrite (EXTOUT_LINES[j], *__comp_inst->extout[j]);
+				}
+			#endif
 	}
 }
 
