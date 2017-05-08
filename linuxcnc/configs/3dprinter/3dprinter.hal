@@ -3,29 +3,35 @@
 loadrt [KINS]KINEMATICS
 loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS 
 loadrt dspin
+loadrt scale names=yscale
 loadrt sum2 names=joint0-sum,joint1-sum
+loadrt limit3 names=j0limit,j1limit
 loadrt pid names=j0pos-pid,j1pos-pid,zpos-pid,apos-pid
 
-addf motion-command-handler 	servo-thread
+addf motion-command-handler 		servo-thread
 addf motion-controller 			servo-thread
+addf yscale				servo-thread
 addf joint0-sum				servo-thread
 addf joint1-sum				servo-thread
 addf j0pos-pid.do-pid-calcs		servo-thread
 addf j1pos-pid.do-pid-calcs		servo-thread
 addf zpos-pid.do-pid-calcs		servo-thread
 addf apos-pid.do-pid-calcs		servo-thread
-addf dspin					servo-thread
+addf j0limit				servo-thread
+addf j1limit				servo-thread
+addf dspin				servo-thread
 
 # until we have all hardware up and running, link the joint command values back to feedback
 net xpos-cmd joint.0.motor-pos-cmd => joint.0.motor-pos-fb
-net ypos-cmd joint.1.motor-pos-cmd => joint.1.motor-pos-fb
+net ypos-cmd joint.1.motor-pos-cmd => joint.1.motor-pos-fb => yscale.in
 net zpos-cmd joint.2.motor-pos-cmd => joint.2.motor-pos-fb
 net apos-cmd joint.3.motor-pos-cmd => joint.3.motor-pos-fb
 
 # Convert cartesian axis commands to CoreXY joint commands: joint0 = x+y, joint1=x-y
 # We do this separately in HAL since our homing prodedure uses cartesian axes so using adapted kinematics won't work
 net xpos-cmd => joint0-sum.in0 => joint1-sum.in0
-net ypos-cmd => joint0-sum.in1 => joint1-sum.in1
+net ypos-scaledcmd yscale.out => joint0-sum.in1 => joint1-sum.in1
+setp yscale.gain -1.0
 setp joint1-sum.gain1 -1.0
 net joint0-cmd <= joint0-sum.out
 net joint1-cmd <= joint1-sum.out
@@ -36,7 +42,10 @@ net joints-enable joint.0.amp-enable-out dspin.enable
 # CoreXY joint 0, PID controller and hookup to dSpin driver
 net joint0-cmd => j0pos-pid.command
 net joint0-fb  dspin.position-fb-joint0 j0pos-pid.feedback
-net joint0-velcmd j0pos-pid.output dspin.velocity-cmd-joint0
+net joint0-velcmd j0pos-pid.output => j0limit.in
+net joint0-velcmd-lim j0limit.out => dspin.velocity-cmd-joint0
+setp j0limit.maxv [JOINT_0]MAX_ACCELERATION
+setp j0limit.maxa [JOINT_0]MAX_JERK
 net joints-enable j0pos-pid.enable
 setp j0pos-pid.maxoutput [JOINT_0]MAX_VELOCITY
 setp j0pos-pid.Pgain [JOINT_0]PID_PGAIN
@@ -44,18 +53,23 @@ setp j0pos-pid.Igain [JOINT_0]PID_IGAIN
 setp j0pos-pid.FF1 1.0
 setp j0pos-pid.error-previous-target true
 setp dspin.scale-joint0 [JOINT_0]OUTPUT_SCALE
+net joint0-homesw dspin.switch-status-joint0 => joint.0.home-sw-in
 
 # CoreXY joint 1, PID controller and hookup to dSpin driver
 net joint1-cmd => j1pos-pid.command
 net joint1-fb  dspin.position-fb-joint1 j1pos-pid.feedback
-net joint1-velcmd j1pos-pid.output dspin.velocity-cmd-joint1
+net joint1-velcmd j1pos-pid.output => j1limit.in
+net joint1-velcmd-lim j1limit.out => dspin.velocity-cmd-joint1
+setp j1limit.maxv [JOINT_1]MAX_ACCELERATION
+setp j1limit.maxa [JOINT_1]MAX_JERK
 net joints-enable j1pos-pid.enable
 setp j1pos-pid.maxoutput [JOINT_1]MAX_VELOCITY
 setp j1pos-pid.Pgain [JOINT_1]PID_PGAIN
 setp j1pos-pid.Igain [JOINT_1]PID_IGAIN
 setp j1pos-pid.FF1 1.0
 setp j1pos-pid.error-previous-target true
-setp dspin.scale-joint1 [JOINT_0]OUTPUT_SCALE
+setp dspin.scale-joint1 [JOINT_1]OUTPUT_SCALE
+net joint1-homesw dspin.switch-status-joint1 => joint.1.home-sw-in
 
 # Z-position, PID controller and hookup to dSpin driver
 net zpos-cmd => zpos-pid.command
@@ -68,6 +82,19 @@ setp zpos-pid.Igain [JOINT_2]PID_IGAIN
 setp zpos-pid.FF1 1.0
 setp zpos-pid.error-previous-target true
 setp dspin.scale-joint2 [JOINT_2]OUTPUT_SCALE
+
+# A-position, PID controller and hookup to dSpin driver
+net apos-cmd => apos-pid.command
+net apos-fb  dspin.position-fb-joint3 apos-pid.feedback
+net apos-velcmd apos-pid.output dspin.velocity-cmd-joint3
+net joints-enable apos-pid.enable
+setp apos-pid.maxoutput [JOINT_3]MAX_VELOCITY
+setp apos-pid.Pgain [JOINT_3]PID_PGAIN
+setp apos-pid.Igain [JOINT_3]PID_IGAIN
+setp apos-pid.FF1 1.0
+setp apos-pid.error-previous-target true
+setp dspin.scale-joint3 [JOINT_2]OUTPUT_SCALE
+
 
 # Estop chain
 net estop-out <= iocontrol.0.user-enable-out

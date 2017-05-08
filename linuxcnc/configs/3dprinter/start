@@ -1,0 +1,4 @@
+#!/bin/bash
+cd /home/pi/linuxcnc/configs/3dprinter
+. /home/pi/linuxcnc-dev/scripts/rip-environment
+linuxcnc 3dprinter.ini

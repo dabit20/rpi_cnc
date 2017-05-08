@@ -73,7 +73,7 @@ class printer_gui(object):
     self.window = self.builder.get_object("window1")        
     self.panel = gladevcp.makepins.GladePanel(self.halcomp, xmlname, self.builder, None)
     self.halcomp.ready()
-    self.builder.get_object("window1").set_title("Dabit3D printer gui v0.21 ");
+    self.builder.get_object("window1").set_title("Dabit3D printer gui v0.22 ");
     self.prefs = preferences()
     self.builder.get_object("extruder_settemp").set_value(self.prefs.getpref("extruder_settemp", 160.0, float))
     self.builder.get_object("buildplatform_settemp").set_value(self.prefs.getpref("buildplatform_settemp", 40.0, float))
@@ -105,7 +105,7 @@ class printer_gui(object):
     if jogheel_newvalue != self.jogwheel_oldvalue:
     	self.gotomanualmode()
     	if self.status.joint[self.selectedaxis]['homed']:
-    		self.command.jog(self.emc.JOG_INCREMENT,False,self.selectedaxis,100,(jogheel_newvalue-self.jogwheel_oldvalue)*0.1)
+    		self.command.jog(self.emc.JOG_INCREMENT,False,self.selectedaxis,100,(jogheel_newvalue-self.jogwheel_oldvalue)*0.3)
     self.jogwheel_oldvalue = jogheel_newvalue
     return True
     
@@ -148,7 +148,7 @@ class printer_gui(object):
     print "selectedaxis ", self.selectedaxis
     self.gotomanualmode()
     if self.status.joint[self.selectedaxis]['homed']:
-        self.command.jog(self.emc.JOG_CONTINUOUS,False,self.selectedaxis,10)
+        self.command.jog(self.emc.JOG_CONTINUOUS,False,self.selectedaxis,150)
   
   def on_hal_jogplus_released(self, widget, data=None):
     self.gotomanualmode()
@@ -158,7 +158,7 @@ class printer_gui(object):
   def on_hal_jogmin_pressed(self, widget, data=None):
     self.gotomanualmode()
     if self.status.joint[self.selectedaxis]['homed']:
-        self.command.jog(self.emc.JOG_CONTINUOUS,False,self.selectedaxis,-10)
+        self.command.jog(self.emc.JOG_CONTINUOUS,False,self.selectedaxis,-150)
   
   def on_hal_jogmin_released(self, widget, data=None):
     self.gotomanualmode()
