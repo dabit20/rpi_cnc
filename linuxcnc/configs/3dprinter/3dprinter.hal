@@ -93,7 +93,7 @@ setp apos-pid.Pgain [JOINT_3]PID_PGAIN
 setp apos-pid.Igain [JOINT_3]PID_IGAIN
 setp apos-pid.FF1 1.0
 setp apos-pid.error-previous-target true
-setp dspin.scale-joint3 [JOINT_2]OUTPUT_SCALE
+setp dspin.scale-joint3 [JOINT_3]OUTPUT_SCALE
 
 
 # Estop chain
