@@ -1,0 +1,17 @@
+( M290 Pxx: Set heatbed temp in degrees C, wait until temp reached. )
+(           This code enables the heatbed with given temperature when the P parameter is > 0 or disables it otherwise)
+(           heatbed set temp is supposed to be connected to analog-out-01, controller enable to digital-out-01, and actual temperature to analog-in-01)
+
+o<m290> sub
+M204 P#<P>
+o100 IF [#<P> GT 0.0]
+  M66 E1
+  o101 WHILE [ABS[#5399 - #<P>] GT 5.0]
+    G4 P2
+    (debug, Waiting for heatbed to reach #<P> degrees. Current temp=#5399)
+    M66 E1
+  o101 ENDWHILE
+  (debug, heatbed at temperature!)
+o100 ENDIF
+o<m290> endsub
+M2

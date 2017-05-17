@@ -1,0 +1,19 @@
+( M240 Pxx: Set bed temp in degrees C, no waiting until temp reached. )
+(           This code enables the bed heater with given temperature when the P parameter is > 0 or disables it otherwise)
+(           Bed set temp is supposed to be connected to analog-out-01, controller enable to digital-out-01, and actual temperature to analog-in-01)
+
+o<m240> sub
+M70
+M400
+G91 
+G0 X0.0001
+G0 X-0.0001
+M72
+o100 IF [#<P> GT 0.0]
+    M68 E1 Q#<P>
+    M64 P1
+o100 ELSE 
+    M65 P1   
+o100 ENDIF
+o<m240> endsub
+M2

@@ -1,0 +1,24 @@
+o<on_abort> sub
+(print, on_abort executing..)
+
+; Turn off all heaters
+M65 P0
+M65 P1
+M65 P2
+G54 (origin offsets are set to the default)
+G17 (select XY plane)
+G90 (absolute)
+G94 (feed mode: units/minute)
+M48 (set feed and speed overrides)
+G40 (cutter compensation off)
+M5  (spindle off)
+
+; M2 sets G1, but  this fails with feed zero
+; a G80 is the next best safe thing
+G80 (cancel modal motion)
+
+M9  (mist and coolant off)
+
+o<on_abort> endsub
+m2
+

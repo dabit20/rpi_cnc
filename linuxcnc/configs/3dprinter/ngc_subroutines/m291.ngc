@@ -1,0 +1,17 @@
+( M291 Pxx: Set chamber temp in degrees C, wait until temp reached. )
+(           This code enables the chamber heater with given temperature when the P parameter is > 0 or disables it otherwise)
+(           chamber set temp is supposed to be connected to analog-out-02, controller enable to digital-out-02, and actual temperature to analog-in-02)
+
+o<m291> sub
+M204 P#<P>
+o100 IF [#<P> GT 0.0]
+  M66 E2
+  o101 WHILE [ABS[#5399 - #<P>] GT 5.0]
+    G4 P2
+    (debug, Waiting for chamber to reach #<P> degrees. Current temp=#5399)
+    M66 E2
+  o101 ENDWHILE
+  (debug, chamber at temperature!)
+o100 ENDIF
+o<m291> endsub
+M2

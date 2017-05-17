@@ -1,0 +1,17 @@
+( M209 Pxx: Set extruder temp in degrees C, wait until temp reached. )
+(           This code enables the extruder with given temperature when the P parameter is > 0 or disables it otherwise)
+(           Extruder set temp is supposed to be connected to analog-out-00, controller enable to digital-out-00, and actual temperature to analog-in-00)
+
+o<m209> sub
+M204 P#<P>
+o100 IF [#<P> GT 0.0]
+  M66 E0
+  o101 WHILE [ABS[#5399 - #<P>] GT 5.0]
+    G4 P2
+    (debug, Waiting for extruder to reach #<P> degrees. Current temp=#5399)
+    M66 E0
+  o101 ENDWHILE
+  (debug, Extruder at temperature!)
+o100 ENDIF
+o<m209> endsub
+M2
