@@ -67,6 +67,7 @@ class printer_gui(object):
     self.emc = linuxcnc
     self.command = self.emc.command()
     self.status = self.emc.stat()
+    self.errchannel = self.emc.error_channel()
     self.builder = gtk.Builder()
     self.builder.add_from_file(xmlname)
     self.halcomp = hal.component("printer_gui")
@@ -83,7 +84,7 @@ class printer_gui(object):
     self.window.show()
     
     # The gobject.timeout_add() function sets a function to be called at regular intervals
-    gobject.timeout_add(100, self.periodic) # time between calls to the function, in milliseconds
+    gobject.timeout_add(150, self.periodic) # time between calls to the function, in milliseconds
     self.machine_status = 0
     # our selected axis to jog
     self.selectedaxis = 0
@@ -159,6 +160,15 @@ class printer_gui(object):
     	if self.status.joint[self.selectedaxis]['homed']:
     		self.command.jog(self.emc.JOG_INCREMENT,False,self.selectedaxis,100,(jogheel_newvalue-self.jogwheel_oldvalue)*0.3)
     self.jogwheel_oldvalue = jogheel_newvalue
+    
+    error=self.errchannel.poll()
+    if error:
+      kind, text = error
+      if kind in (linuxcnc.NML_ERROR, linuxcnc.OPERATOR_ERROR):
+        typus = "*ERROR*"
+      else:
+        typus = "*INFO*"
+      print typus, text
     return True
     
   # for debugging purposes
