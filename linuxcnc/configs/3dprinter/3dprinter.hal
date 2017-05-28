@@ -7,6 +7,7 @@ loadrt scale names=yscale
 loadrt sum2 names=joint0-sum,joint1-sum
 loadrt limit3 names=j0limit,j1limit
 loadrt pid names=j0pos-pid,j1pos-pid,zpos-pid,apos-pid
+loadrt not names=zhome-not
 
 addf motion-command-handler 		servo-thread
 addf motion-controller 			servo-thread
@@ -20,6 +21,7 @@ addf apos-pid.do-pid-calcs		servo-thread
 addf j0limit				servo-thread
 addf j1limit				servo-thread
 addf dspin				servo-thread
+addf zhome-not				servo-thread
 
 # until we have all hardware up and running, link the joint command values back to feedback
 net xpos-cmd joint.0.motor-pos-cmd => joint.0.motor-pos-fb
@@ -82,6 +84,8 @@ setp zpos-pid.Igain [JOINT_2]PID_IGAIN
 setp zpos-pid.FF1 1.0
 setp zpos-pid.error-previous-target true
 setp dspin.scale-joint2 [JOINT_2]OUTPUT_SCALE
+net joint2-homesw-not dspin.switch-status-joint2 => zhome-not.in
+net joint2-homesw zhome-not.out => joint.2.home-sw-in
 
 # A-position, PID controller and hookup to dSpin driver
 net apos-cmd => apos-pid.command
