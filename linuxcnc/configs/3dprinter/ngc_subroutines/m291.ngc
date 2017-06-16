@@ -3,7 +3,7 @@
 (           chamber set temp is supposed to be connected to analog-out-02, controller enable to digital-out-02, and actual temperature to analog-in-02)
 
 o<m291> sub
-M204 P#<P>
+M241 P#<P>
 o100 IF [#<P> GT 0.0]
   M66 E2
   o101 WHILE [ABS[#5399 - #<P>] GT 5.0]

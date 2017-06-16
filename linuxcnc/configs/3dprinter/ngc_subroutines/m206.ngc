@@ -1,0 +1,18 @@
+( M206 Pxx: Set fan speed. Fan speed must be 0-255. S is accepted, but ignored)
+o<m206> sub
+M400
+o100 IF [#<P> LT 0.0]
+   #<P> = 0.0
+o100 ENDIF
+o110 IF [#<P> GT 255.0]
+   #<P> = 255.0
+o110 ENDIF
+
+o120 IF [#<P> GT 0.0]
+    M68 E3 Q#<P>
+    M64 P3
+o120 ELSE 
+    M65 P3   
+o120 ENDIF
+o<m206> endsub
+M2

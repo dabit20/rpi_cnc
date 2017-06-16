@@ -3,7 +3,7 @@
 (           heatbed set temp is supposed to be connected to analog-out-01, controller enable to digital-out-01, and actual temperature to analog-in-01)
 
 o<m290> sub
-M204 P#<P>
+M240 P#<P>
 o100 IF [#<P> GT 0.0]
   M66 E1
   o101 WHILE [ABS[#5399 - #<P>] GT 5.0]
