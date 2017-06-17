@@ -705,6 +705,12 @@ struct __comp_state {
     
     hal_float_t scale_joint[NR_JOINTS];		/* Scale from units to steps */
     hal_u32_t status_joint[NR_JOINTS];
+    
+    hal_float_t debug_float;				/* Debug pins, value may vary according to developers need */
+    hal_s32_t debug_int;
+    
+    int32_t prevpos[NR_JOINTS];			/* Keep track of previous position to detect overflow of L6470 position counter */
+    hal_float_t pos_offset[NR_JOINTS];		/* If we have an overflow,/underflow, we offset the position by à fullscale amount */
 };
 
 struct __comp_state *__comp_first_inst=0, *__comp_last_inst=0;
@@ -754,6 +760,13 @@ static int export(char *prefix, long extra_arg) {
 			"%s.switch-status-joint%d", prefix, i);
 		if(r != 0) return r;                    
 	}
+	/* Debug pins */
+	r = hal_param_float_newf(HAL_RW, &(inst->debug_float), comp_id,
+		    "%s.debug-float", prefix,i);
+	if(r != 0) return r;
+	r = hal_param_s32_newf(HAL_RW, &(inst->debug_int), comp_id,
+		    "%s.debug-s32", prefix,i);
+	if(r != 0) return r;
 	/* Ext inputs */
 	#if (NR_EXT_INPUTS>0)
 		for (i=0;i<NR_EXT_INPUTS;i++) {
@@ -784,6 +797,8 @@ static int export(char *prefix, long extra_arg) {
     	inst->scale_joint[i] = 1.0;	
     	 *inst->velocity_cmd_joint[i] = 0.0;
     	 *inst->position_fb_joint[i] = 0.0;
+    	 inst->prevpos[i] = 0;
+    	 inst->pos_offset[i] = 0.0;
     }
     
     rtapi_snprintf(buf, sizeof(buf), "%s", prefix);
@@ -865,9 +880,19 @@ static void _(struct __comp_state *__comp_inst, long period) {
 	                /* Sign-extend the 22-bit signed position value to 32-bit */
 	                if (pos[j] & 0x00200000)
 	                        pos[j] |= 0xffc00000;
+	                /* See if we had overflow or underflow. Hardcoded for 22-bit position register of L6470 */
+	                if (pos[j] < -1048576 && __comp_inst->prevpos[j] > 1048576)  {
+	                	__comp_inst->pos_offset[j] += 32766.9921875 / __comp_inst->scale_joint[j];
+	                }
+	                if (pos[j] > 1048576 && __comp_inst->prevpos[j] < -1048576)  {
+	                	__comp_inst->pos_offset[j] -= 32766.9921875 / __comp_inst->scale_joint[j];
+	                }
+	                __comp_inst->prevpos[j] = pos[j];
 	                /* Calculate the current position. Note the 128-ustep correction */
-	                *__comp_inst->position_fb_joint[j] = ((hal_float_t)pos[j]) / (__comp_inst->scale_joint[j] * 128.0);
+	                *__comp_inst->position_fb_joint[j] = __comp_inst->pos_offset[j] + (((hal_float_t)pos[j]) / (__comp_inst->scale_joint[j] * 128.0));
 	        }
+__comp_inst->debug_int = pos[3];
+__comp_inst->debug_float = __comp_inst->pos_offset[3];
 	        /* Get status. Do this through an intermediate uint32_t array; reading directly into __comp_inst caused trouble */
 		dSpin_getstatus(stat);
 	        for (j=0;j<NR_JOINTS;j++) { 
