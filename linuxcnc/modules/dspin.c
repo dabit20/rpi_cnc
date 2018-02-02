@@ -51,11 +51,11 @@ static uint8_t dSPIN_MISO[NR_JOINTS] = { 11, 24, 6, 26 };       /* SDO lines of 
 /* BEMF compensation parameters for each motor. See datasheet and ST AN4144 for information on how
  * to obtain these 
  */
-static uint8_t KVAL_HOLD[NR_JOINTS] = { 0x24, 0x24, 0x13, 0x16 };
-static uint8_t KVAL_RUN[NR_JOINTS] = { 0x2F, 0x2F, 0x33, 0x35 };         
-static uint8_t ST_SLP[NR_JOINTS] = { 0x40, 0x40, 0x17, 0x0A  }; 
-static uint8_t  FN_SLP[NR_JOINTS] = { 0x57, 0x57, 0x4B, 0x26 }; 
-static uint16_t INT_SPD[NR_JOINTS] = { 0xE4E, 0xE4E, 0x1026, 0x2073 }; 
+static uint8_t KVAL_HOLD[NR_JOINTS] = { 0x24, 0x24, 0x13, 0x18 };
+static uint8_t KVAL_RUN[NR_JOINTS] = { 0x2F, 0x2F, 0x33, 0x22 };         
+static uint8_t ST_SLP[NR_JOINTS] = { 0x40, 0x40, 0x17, 0x0F  }; 
+static uint8_t  FN_SLP[NR_JOINTS] = { 0x57, 0x57, 0x4B, 0x30 }; 
+static uint16_t INT_SPD[NR_JOINTS] = { 0xE4E, 0xE4E, 0x1026, 0x119E }; 
 
 /* Extra input/output lines. Define the number of ext inputs and outputs, and define the arrays with BCM pin numbers */
 #define NR_EXT_INPUTS 3
@@ -629,7 +629,7 @@ int initdSpin(void)
         for (j=0;j<NR_JOINTS;j++) datastore[j] = 5 | 0x1000;
         dSpin_writeparam2byte  (dSPIN_MIN_SPEED, datastore);       
         /* Set fullstepping treshold speed to 397 steps/s (15.25 steps/s per bit) */
-        for (j=0;j<NR_JOINTS;j++) datastore[j] = 26;
+        for (j=0;j<NR_JOINTS;j++) datastore[j] = 75;// Temphack, was 26;
         dSpin_writeparam2byte  (dSPIN_FS_SPD, datastore);
         /* Set max acceleration and deceleration values. Base these on 1G using 2.5 step/mm, which calculates to
             25000 steps/s/s. Scale by 0.137438 to get the required 12-bit value (3436d). This really should be a parameter */
