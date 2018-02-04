@@ -217,7 +217,7 @@
                                 <property name="font_size">16</property>
                                 <property name="homed_color">#0000ffff0000</property>
                                 <property name="imperial_text_template">%9.1f</property>
-                                <property name="joint_number">2</property>
+                                <property name="joint_number">3</property>
                                 <property name="mm_text_template">%10.1f</property>
                                 <property name="rel_color">#000000000000</property>
                                 <property name="toggle_readout">False</property>
